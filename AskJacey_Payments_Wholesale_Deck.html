@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Ask Jacey | Payments Domain Executive Masterclass</title>
+<style>
+:root{--navy:#0b1e3d;--navy2:#102a54;--white:#fff;--gold:#c9a84c;--ink:#1e293b;--muted:#64748b;--bg:#f5f8fc}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+.app{display:grid;grid-template-columns:320px 1fr;min-height:100vh}
+.sidebar{background:linear-gradient(180deg,var(--navy),#071428);color:#e8eefc;padding:20px 16px;position:sticky;top:0;height:100vh;overflow:auto}
+.brand{font-family:Georgia,serif;color:var(--gold);font-size:1.35rem;margin-bottom:8px}.sub{font-size:.8rem;color:#9fb0d0;margin-bottom:14px}
+.search{width:100%;padding:10px;border:1px solid #36517e;border-radius:8px;background:#0e2242;color:#fff}
+.modnav{margin-top:14px;display:flex;flex-direction:column;gap:8px}.modbtn{border:1px solid #324f7c;background:#10294f;color:#eaf1ff;padding:10px;border-radius:8px;text-align:left;cursor:pointer}
+.modbtn.active{outline:2px solid var(--gold);background:#173768}
+.main{padding:24px 28px 80px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.title{font-size:1.6rem;color:var(--navy);font-weight:700}.controls button{margin-left:6px}
+.progressWrap{margin-top:12px;background:#d7e2f5;border-radius:999px;height:10px;overflow:hidden}.bar{height:10px;background:linear-gradient(90deg,var(--gold),#e8cc80);width:0}
+.slide{display:none;background:#fff;border:1px solid #d7dfec;border-radius:14px;padding:24px;margin-top:18px;box-shadow:0 8px 24px rgba(16,42,84,.08)}
+.slide.active{display:block}.eyebrow{font-size:.72rem;letter-spacing:.12em;color:var(--gold);text-transform:uppercase}
+h2{margin:8px 0 10px;color:var(--navy)} p,li{line-height:1.65}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.card{background:#f8fbff;border:1px solid #d8e3f2;border-left:4px solid var(--gold);padding:12px;border-radius:8px}
+.details{border:1px solid #d8e3f2;border-radius:8px;margin-top:10px}.details summary{padding:10px 12px;cursor:pointer;font-weight:600;color:var(--navy)}.details .body{padding:0 12px 12px}
+.hl{background:#fff3cd;padding:0 2px;border-radius:2px}
+.gloss{color:#0f6292;text-decoration:underline dotted;cursor:pointer}
+.footer{position:fixed;left:320px;right:0;bottom:0;background:#08162de6;color:#cdd8ee;padding:8px 16px;font-size:.82rem}
+.navrow{display:flex;justify-content:space-between;margin-top:14px}
+.btn{border:1px solid #3a5a8c;background:#0f2a52;color:#fff;border-radius:8px;padding:8px 12px;cursor:pointer}
+.presenter .note{display:block}.note{display:none;margin-top:12px;background:#fff8e6;border:1px solid #f1deaa;padding:10px;border-radius:8px;font-size:.92rem}
+#glossaryModal{position:fixed;inset:0;background:rgba(3,10,20,.55);display:none;align-items:center;justify-content:center;z-index:20}
+.modalBox{background:#fff;max-width:560px;width:92%;padding:18px;border-radius:12px;border-top:4px solid var(--gold)}
+@media (max-width:1100px){.app{grid-template-columns:1fr}.sidebar{position:relative;height:auto}.footer{left:0}.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <aside class="sidebar">
+    <div class="brand">Ask Jacey</div><div class="sub">Payments Executive Masterclass</div>
+    <input id="searchInput" class="search" placeholder="Search terms (e.g., STP, Nostro, OFAC)" />
+    <div class="modnav" id="modnav"></div>
+  </aside>
+  <main class="main">
+    <div class="topbar"><div class="title">Payments Domain Training Application</div><div class="controls"><button class="btn" id="presenterBtn">Presenter Mode</button><button class="btn" id="fsBtn">Fullscreen</button></div></div>
+    <div class="progressWrap"><div class="bar" id="bar"></div></div>
+
+    <section class="slide active" data-module="Module 1" data-title="Wholesale Banking Fundamentals">
+      <div class="eyebrow">Module 1</div><h2>Wholesale Banking Fundamentals</h2>
+      <p>Wholesale banking serves large organizations: corporates, governments, financial institutions, insurers, funds, and multinationals. Compared to retail, it involves larger transaction volumes, cross-border complexity, treasury sensitivity, and stronger control obligations.</p>
+      <div class="grid2"><div class="card"><strong>Retail:</strong> individual customer, branch-centric, standardized products.</div><div class="card"><strong>Wholesale:</strong> relationship-led, bespoke solutions, high-value flows.</div></div>
+      <details class="details"><summary>Expand: Why payments are the bloodstream</summary><div class="body"><ul><li>Supplier continuity and payroll trust.</li><li>Treasury liquidity positioning.</li><li>Trade cycle continuity and settlement certainty.</li><li>Client confidence and service-level credibility.</li></ul></div></details>
+      <div class="note"><strong>Presenter note:</strong> Emphasize that a single failed high-value payment can carry reputational and liquidity consequences far beyond its face value.</div>
+    </section>
+
+    <section class="slide" data-module="Module 2" data-title="Payments Types">
+      <div class="eyebrow">Module 2</div><h2>Payments Types & Rails</h2>
+      <p><strong>Domestic</strong> flows occur within one country. <strong>Cross-border</strong> flows include additional layers: FX conversion, intermediary routing, sanctions checks, cut-off windows, and time-zone dependencies.</p>
+      <div class="grid2"><div class="card"><strong>High-value:</strong> urgent treasury movements, securities settlement, strategic supplier payouts.</div><div class="card"><strong>Low-value:</strong> recurring and bulk transactions such as utilities, collections, and routine transfers.</div></div>
+      <details class="details"><summary>Expand: Common rails and methods</summary><div class="body"><ul><li>SWIFT messaging network (instruction transport, not money movement).</li><li>CHIPS / Fedwire / TARGET2 / SEPA depending on geography and purpose.</li><li>Wire transfer, ACH-style bulk processing, and real-time rails.</li></ul></div></details>
+      <div class="note"><strong>Presenter note:</strong> Ask the room which rails they use today and where exceptions usually arise.</div>
+    </section>
+
+    <section class="slide" data-module="Module 3" data-title="Lifecycle">
+      <div class="eyebrow">Module 3</div><h2>End-to-End Payment Lifecycle</h2>
+      <p>Lifecycle sequence: Initiation → Validation → Enrichment → Routing → Clearing → Settlement → Reconciliation.</p>
+      <ul><li>Initiation via portal, API, host-to-host file, or branch instruction.</li><li>Validation checks format, required fields, approvals, funds, duplicates.</li><li>Enrichment adds routing identifiers, intermediaries, charges, purpose.</li><li>Routing selects path by currency, urgency, amount, reachability.</li><li>Clearing exchanges obligations; settlement finalizes value transfer.</li><li>Reconciliation aligns internal books with external confirmations.</li></ul>
+      <details class="details"><summary>Expand: Operational risk concentration points</summary><div class="body">Validation and routing carry the highest operational risk concentration because bad data and poor route selection propagate downstream delays and repair cost.</div></details>
+    </section>
+
+    <section class="slide" data-module="Module 4" data-title="SWIFT & ISO 20022">
+      <div class="eyebrow">Module 4</div><h2>SWIFT & ISO 20022</h2>
+      <p>Legacy SWIFT MT messages remain widely used (<span class="gloss" data-term="MT103">MT103</span>, MT202, MT101), while ISO 20022 introduces richer structured fields for improved automation, screening precision, and analytics quality.</p>
+      <div class="grid2"><div class="card"><strong>MT model:</strong> compact, less structured data, higher truncation/repair risk.</div><div class="card"><strong>ISO 20022:</strong> semantic structure, richer remittance, better STP outcomes.</div></div>
+      <details class="details"><summary>Expand: Why migration matters to executives</summary><div class="body">Migration is not just technology uplift; it impacts sanctions quality, investigation speed, client reporting depth, and long-term operating leverage.</div></details>
+    </section>
+
+    <section class="slide" data-module="Module 5" data-title="Architecture">
+      <div class="eyebrow">Module 5</div><h2>Payment Systems Architecture</h2>
+      <p>Typical architecture chain: Channels → Validation → Screening → Routing → Clearing Interface → Settlement Engine → Reconciliation & Reporting.</p>
+      <ul><li>Channels: portal, API, file gateway, branch system.</li><li>Processing: batch for volume efficiency, real-time for immediacy.</li><li>Control overlays: AML, fraud scoring, sanctions and policy gates.</li></ul>
+      <p><span class="gloss" data-term="STP">STP</span> performance is a function of upstream data quality and consistent rule governance.</p>
+    </section>
+
+    <section class="slide" data-module="Module 6" data-title="Compliance">
+      <div class="eyebrow">Module 6</div><h2>Compliance & Regulatory Controls</h2>
+      <ul><li><span class="gloss" data-term="AML">AML</span>: detect suspicious financial behavior patterns.</li><li><span class="gloss" data-term="KYC">KYC</span>: identify and risk-profile customers/entities.</li><li><span class="gloss" data-term="Sanctions">Sanctions screening</span>: prevent restricted party processing.</li><li><span class="gloss" data-term="OFAC">OFAC</span>: globally referenced U.S. sanctions framework.</li></ul>
+      <details class="details"><summary>Expand: Why false positives still matter</summary><div class="body">False positives increase friction and manual review cost; tuning thresholds and data quality controls are essential for balancing risk and client experience.</div></details>
+    </section>
+
+    <section class="slide" data-module="Module 7" data-title="Reconciliation">
+      <div class="eyebrow">Module 7</div><h2>Exception Handling & Reconciliation</h2>
+      <p>Common exceptions: invalid account details, wrong currency, duplicate files, insufficient funds, sanctions hold.</p>
+      <p>Repair flow: Queue → Investigate → Correct → Reprocess.</p>
+      <div class="grid2"><div class="card"><strong>Nostro reconciliation:</strong> correspondent statement vs internal position.</div><div class="card"><strong>GL reconciliation:</strong> accounting ledger vs transaction engine.</div></div>
+      <p><span class="gloss" data-term="Nostro">Nostro</span> and <span class="gloss" data-term="Vostro">Vostro</span> positions are critical for cross-border liquidity transparency.</p>
+    </section>
+
+    <section class="slide" data-module="Module 8" data-title="Trends">
+      <div class="eyebrow">Module 8</div><h2>Modernization Trends</h2>
+      <ul><li>Real-time payments and always-on client expectation.</li><li>API banking and embedded treasury workflows.</li><li>Open banking enablement with controlled consent patterns.</li><li>Cloud transformation for scalable and resilient processing.</li><li>ISO 20022 migration as strategic data modernization.</li></ul>
+      <details class="details"><summary>Expand: Executive success metrics</summary><div class="body">Track STP uplift, exception rate reduction, manual repair effort, compliance alert precision, reconciliation timeliness, and client SLA adherence.</div></details>
+      <div class="note"><strong>Presenter note:</strong> Close with transformation roadmap: controls first, data quality second, channel modernization third.</div>
+    </section>
+
+    <section class="slide" data-module="Final" data-title="IP Note">
+      <div class="eyebrow">Final</div><h2>IP & Usage Note</h2>
+      <p>This training application and content organization are prepared for controlled corporate learning use. Redistribution, resale, or unauthorized reproduction requires explicit permission from the content owner.</p>
+      <p>© Ask Jacey — Corporate Training / Payments Domain.</p>
+    </section>
+
+    <div class="navrow"><button class="btn" id="prevBtn">◀ Previous</button><button class="btn" id="nextBtn">Next ▶</button></div>
+  </main>
+</div>
+<div id="glossaryModal"><div class="modalBox"><h3 id="gTitle"></h3><p id="gBody"></p><button class="btn" onclick="closeGloss()">Close</button></div></div>
+<div class="footer">Ask Jacey | <a href="mailto:askjaceynow@gmail.com" style="color:#e8cc80">askjaceynow@gmail.com</a></div>
+<script>
+const slides=[...document.querySelectorAll('.slide')], modnav=document.getElementById('modnav'), bar=document.getElementById('bar');
+let i=0, presenter=false;
+const glossary={STP:'Straight Through Processing: end-to-end automated processing without manual intervention.',Nostro:'Our money held with another bank.',Vostro:'Your money held with us.',AML:'Anti-Money Laundering controls to detect suspicious behavior.',KYC:'Know Your Customer identity and risk profiling.',Sanctions:'Screening against restricted parties/entities/jurisdictions.',OFAC:'Office of Foreign Assets Control, U.S. sanctions authority.',MT103:'SWIFT MT103: customer credit transfer instruction.'};
+function render(){slides.forEach((s,idx)=>s.classList.toggle('active',idx===i));document.querySelectorAll('.modbtn').forEach((b,idx)=>b.classList.toggle('active',idx===i));bar.style.width=((i+1)/slides.length*100)+'%';}
+slides.forEach((s,idx)=>{const b=document.createElement('button');b.className='modbtn';b.textContent=`${s.dataset.module} — ${s.dataset.title}`;b.onclick=()=>{i=idx;render()};modnav.appendChild(b)});
+document.getElementById('prevBtn').onclick=()=>{if(i>0){i--;render()}};document.getElementById('nextBtn').onclick=()=>{if(i<slides.length-1){i++;render()}};
+document.addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)&&i<slides.length-1){i++;render()} if(['ArrowLeft','PageUp'].includes(e.key)&&i>0){i--;render()}});
+document.getElementById('presenterBtn').onclick=()=>{presenter=!presenter;document.getElementById('app').classList.toggle('presenter',presenter)};
+document.getElementById('fsBtn').onclick=()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();};
+function openGloss(term){document.getElementById('gTitle').textContent=term;document.getElementById('gBody').textContent=glossary[term]||'Definition unavailable.';document.getElementById('glossaryModal').style.display='flex';}
+function closeGloss(){document.getElementById('glossaryModal').style.display='none'}
+document.querySelectorAll('.gloss').forEach(el=>el.addEventListener('click',()=>openGloss(el.dataset.term)));
+const searchInput=document.getElementById('searchInput');
+searchInput.addEventListener('input',()=>{const q=searchInput.value.trim().toLowerCase();slides.forEach(s=>{s.querySelectorAll('.hl').forEach(n=>n.replaceWith(n.textContent));if(!q)return;const walker=document.createTreeWalker(s,NodeFilter.SHOW_TEXT);const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);nodes.forEach(n=>{const t=n.textContent;const idx=t.toLowerCase().indexOf(q);if(idx>-1&&q.length>1){const span=document.createElement('span');span.innerHTML=t.slice(0,idx)+`<span class="hl">${t.slice(idx,idx+q.length)}</span>`+t.slice(idx+q.length);n.replaceWith(span)}})})});
+render();
+</script>
+</body>
+</html>
