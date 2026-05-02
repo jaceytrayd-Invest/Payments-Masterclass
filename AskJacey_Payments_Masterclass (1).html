@@ -1,0 +1,2114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ask Jacey | Corporate Banking & Payments Masterclass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+/* ══════════════════════════════════════════════════════════
+   ROOT TOKENS
+══════════════════════════════════════════════════════════ */
+:root {
+  --navy:     #0B1E3D;
+  --navy-mid: #152D56;
+  --navy-dk:  #071428;
+  --teal:     #0F6292;
+  --sky:      #A5D7E8;
+  --gold:     #C9A84C;
+  --gold-lt:  #E8CC80;
+  --gold-dk:  #9A7A2E;
+  --white:    #FFFFFF;
+  --off:      #F7F9FC;
+  --slate:    #334155;
+  --muted:    #64748B;
+  --grid:     #CBD5E1;
+  --green:    #059669;
+  --red:      #DC2626;
+  --purple:   #7C3AED;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'DM Sans', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #050e1c; font-family: var(--font-body); }
+
+/* ══════════════════════════════════════════════════════════
+   LOGIN SCREEN
+══════════════════════════════════════════════════════════ */
+#login-screen {
+  position: fixed; inset: 0; z-index: 1000;
+  background: radial-gradient(ellipse at 30% 40%, #0d2044 0%, #050e1c 70%);
+  display: flex; align-items: center; justify-content: center;
+}
+.login-box {
+  width: 420px; padding: 52px 48px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 4px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,168,76,0.08);
+  animation: fadeUp 0.8s ease both;
+}
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+.login-logo { display:flex; align-items:center; gap:14px; margin-bottom:36px; }
+.login-logo svg { width:42px; height:42px; flex-shrink:0; }
+.login-brand { font-family:var(--font-display); font-size:1.3rem; color:var(--gold); font-weight:600; letter-spacing:0.02em; line-height:1.2; }
+.login-brand span { display:block; font-size:0.7rem; font-family:var(--font-body); color:var(--muted); font-weight:300; letter-spacing:0.12em; text-transform:uppercase; margin-top:2px; }
+
+.login-title { font-family:var(--font-display); font-size:1.6rem; color:var(--white); font-weight:300; margin-bottom:8px; line-height:1.3; }
+.login-sub { font-size:0.78rem; color:var(--muted); margin-bottom:36px; letter-spacing:0.04em; }
+
+.login-field { margin-bottom:18px; }
+.login-field label { display:block; font-size:0.7rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px; }
+.login-field input {
+  width:100%; padding:12px 16px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius:2px; color:var(--white);
+  font-family:var(--font-body); font-size:0.9rem;
+  outline:none; transition:border-color 0.2s;
+}
+.login-field input:focus { border-color:rgba(201,168,76,0.5); }
+.login-field input::placeholder { color:rgba(255,255,255,0.2); }
+
+.login-btn {
+  width:100%; margin-top:8px; padding:14px;
+  background: var(--gold); color:var(--navy-dk);
+  border:none; border-radius:2px; cursor:pointer;
+  font-family:var(--font-body); font-size:0.85rem; font-weight:600;
+  letter-spacing:0.08em; text-transform:uppercase;
+  transition:background 0.2s, transform 0.1s;
+}
+.login-btn:hover { background:var(--gold-lt); }
+.login-btn:active { transform:scale(0.99); }
+
+.login-error { display:none; margin-top:14px; padding:10px 14px; background:rgba(220,38,38,0.1); border:1px solid rgba(220,38,38,0.3); border-radius:2px; font-size:0.78rem; color:#FDA4A4; text-align:center; }
+.login-error.show { display:block; }
+
+.login-footer { margin-top:36px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.06); font-size:0.68rem; color:rgba(100,116,139,0.7); text-align:center; letter-spacing:0.06em; }
+.login-footer a { color:rgba(201,168,76,0.5); text-decoration:none; }
+
+/* ══════════════════════════════════════════════════════════
+   PRESENTATION SHELL
+══════════════════════════════════════════════════════════ */
+#presentation { display:none; position:fixed; inset:0; }
+#presentation.active { display:block; }
+
+/* 16:9 viewport */
+.deck {
+  position:relative; width:100%; height:100%;
+  display:flex; align-items:center; justify-content:center;
+  background:#050e1c;
+}
+
+.slide-container {
+  position:relative;
+  width: min(100vw, 177.78vh);
+  height: min(100vh, 56.25vw);
+  overflow:hidden;
+}
+
+/* Individual slides */
+.slide {
+  position:absolute; inset:0;
+  opacity:0; pointer-events:none;
+  transition:opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1);
+  transform:translateX(40px);
+}
+.slide.active {
+  opacity:1; pointer-events:auto; transform:translateX(0);
+}
+.slide.exit-left { opacity:0; transform:translateX(-40px); }
+
+/* ══════════════════════════════════════════════════════════
+   FOOTER (all slides)
+══════════════════════════════════════════════════════════ */
+.slide-footer {
+  position:absolute; bottom:0; left:0; right:0; height:28px;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 28px;
+  border-top:1px solid rgba(201,168,76,0.12);
+  background:rgba(5,14,28,0.5);
+  font-size:0.55rem; color:rgba(100,116,139,0.65);
+  letter-spacing:0.1em; text-transform:uppercase;
+  font-family:var(--font-body);
+  z-index:10;
+}
+.slide-footer .footer-brand { color:rgba(201,168,76,0.55); font-weight:500; }
+.slide-footer .footer-email { color:rgba(100,116,139,0.5); }
+.slide-footer .slide-num { font-variant-numeric:tabular-nums; }
+
+/* ══════════════════════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════════════════════ */
+.nav-controls {
+  position:fixed; bottom:18px; left:50%; transform:translateX(-50%);
+  display:flex; align-items:center; gap:10px; z-index:200;
+  background:rgba(5,14,28,0.85); border:1px solid rgba(201,168,76,0.15);
+  border-radius:100px; padding:8px 20px; backdrop-filter:blur(12px);
+}
+.nav-btn {
+  width:32px; height:32px; border-radius:50%;
+  background:rgba(201,168,76,0.1); border:1px solid rgba(201,168,76,0.2);
+  color:var(--gold); cursor:pointer; display:flex; align-items:center; justify-content:center;
+  font-size:0.85rem; transition:all 0.2s;
+}
+.nav-btn:hover { background:rgba(201,168,76,0.2); }
+.nav-btn:disabled { opacity:0.3; cursor:not-allowed; }
+.nav-progress { font-size:0.65rem; color:var(--muted); letter-spacing:0.1em; min-width:60px; text-align:center; font-family:var(--font-body); }
+.nav-section { font-size:0.6rem; color:rgba(201,168,76,0.6); letter-spacing:0.08em; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+/* Keyboard hint */
+.key-hint { position:fixed; top:14px; right:14px; font-size:0.58rem; color:rgba(100,116,139,0.4); letter-spacing:0.08em; z-index:200; }
+
+/* ══════════════════════════════════════════════════════════
+   SHARED LAYOUT HELPERS
+══════════════════════════════════════════════════════════ */
+.slide-bg-dark  { background: linear-gradient(135deg, #071428 0%, #0d2044 100%); }
+.slide-bg-light { background: #F7F9FC; }
+.slide-bg-navy  { background: linear-gradient(135deg, #0B1E3D 0%, #071428 100%); }
+.slide-bg-session { background: linear-gradient(135deg, #071428 0%, #0d2244 50%, #071428 100%); }
+
+/* Content area (below header, above footer) */
+.slide-body { position:absolute; top:70px; left:0; right:0; bottom:28px; padding:0 36px; overflow:hidden; }
+
+/* Slide header */
+.slide-header {
+  position:absolute; top:0; left:0; right:0; height:68px;
+  padding:0 36px;
+  display:flex; flex-direction:column; justify-content:center;
+  border-bottom:1px solid rgba(201,168,76,0.12);
+}
+.slide-header.light { background:var(--white); }
+.slide-header.dark  { background:rgba(7,20,40,0.9); }
+
+.slide-title {
+  font-family:var(--font-display); font-size:1.55rem; font-weight:700;
+  letter-spacing:-0.01em; line-height:1.1;
+}
+.slide-title.light { color:var(--navy); }
+.slide-title.dark  { color:var(--white); }
+.slide-subtitle { font-size:0.7rem; color:var(--muted); letter-spacing:0.06em; margin-top:3px; }
+
+/* Gold accent left bar */
+.gold-bar {
+  position:absolute; left:0; top:0; bottom:0; width:3px;
+  background:linear-gradient(180deg, var(--gold) 0%, var(--gold-dk) 100%);
+}
+
+/* ══════════════════════════════════════════════════════════
+   CARD COMPONENTS
+══════════════════════════════════════════════════════════ */
+.card {
+  background:var(--white); border-radius:3px;
+  border:1px solid rgba(203,213,225,0.7);
+  box-shadow:0 2px 12px rgba(0,0,0,0.06);
+}
+.card-dark {
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(201,168,76,0.15);
+  border-radius:3px;
+}
+.accent-card { border-left:3px solid var(--gold); }
+
+/* Pills / Tags */
+.tag {
+  display:inline-block; padding:2px 8px; border-radius:100px;
+  font-size:0.58rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase;
+}
+.tag-gold  { background:rgba(201,168,76,0.15); color:var(--gold); }
+.tag-teal  { background:rgba(15,98,146,0.15);  color:#38bdf8; }
+.tag-green { background:rgba(5,150,105,0.15);  color:var(--green); }
+.tag-red   { background:rgba(220,38,38,0.15);  color:#f87171; }
+
+/* Flow arrows */
+.arrow-right { display:flex; align-items:center; color:var(--gold); font-size:0.9rem; }
+
+/* ══════════════════════════════════════════════════════════
+   SESSION DIVIDER STYLE
+══════════════════════════════════════════════════════════ */
+.session-divider {
+  position:absolute; inset:0;
+  display:flex; align-items:center;
+}
+.session-divider .left-panel {
+  width:55%; height:100%;
+  padding:60px 48px;
+  display:flex; flex-direction:column; justify-content:center;
+  position:relative;
+}
+.session-divider .right-panel {
+  width:45%; height:100%;
+  background:rgba(255,255,255,0.03);
+  border-left:1px solid rgba(201,168,76,0.1);
+  display:flex; flex-direction:column; justify-content:center;
+  padding:48px 40px;
+}
+.session-number {
+  font-family:var(--font-mono); font-size:0.65rem;
+  color:var(--gold); letter-spacing:0.2em; margin-bottom:18px;
+}
+.session-name {
+  font-family:var(--font-display); font-size:3.2rem; font-weight:700;
+  color:var(--white); line-height:1.05; margin-bottom:20px;
+}
+.session-tagline { font-size:0.85rem; color:rgba(165,215,232,0.7); line-height:1.6; max-width:340px; }
+.session-topics { list-style:none; }
+.session-topics li {
+  display:flex; align-items:flex-start; gap:10px;
+  font-size:0.8rem; color:rgba(255,255,255,0.7);
+  padding:9px 0; border-bottom:1px solid rgba(255,255,255,0.06);
+  line-height:1.4;
+}
+.session-topics li::before { content:''; width:4px; height:4px; background:var(--gold); border-radius:50%; margin-top:6px; flex-shrink:0; }
+.session-topics li strong { color:var(--white); display:block; }
+
+/* Decorative ring */
+.deco-ring {
+  position:absolute; border-radius:50%;
+  border:1px solid rgba(201,168,76,0.08);
+  pointer-events:none;
+}
+
+/* ══════════════════════════════════════════════════════════
+   GRID LAYOUTS
+══════════════════════════════════════════════════════════ */
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+.grid-4 { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:12px; }
+.grid-5 { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
+
+/* ══════════════════════════════════════════════════════════
+   PROCESS FLOW
+══════════════════════════════════════════════════════════ */
+.flow-row { display:flex; align-items:stretch; gap:0; }
+.flow-node {
+  flex:1; display:flex; flex-direction:column; align-items:center;
+  padding:16px 8px 12px; position:relative;
+  border-radius:3px; text-align:center;
+}
+.flow-node-num {
+  width:28px; height:28px; border-radius:50%;
+  background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.7rem; font-weight:700; color:var(--white);
+  margin-bottom:10px; flex-shrink:0;
+}
+.flow-node-label { font-size:0.75rem; font-weight:600; color:var(--white); margin-bottom:5px; line-height:1.2; }
+.flow-node-sub   { font-size:0.62rem; color:rgba(255,255,255,0.55); line-height:1.35; }
+.flow-arrow { width:28px; display:flex; align-items:center; justify-content:center; color:var(--gold); font-size:1rem; flex-shrink:0; align-self:center; }
+
+/* ══════════════════════════════════════════════════════════
+   TABLE COMPONENT
+══════════════════════════════════════════════════════════ */
+.data-table { width:100%; border-collapse:collapse; font-size:0.78rem; }
+.data-table th {
+  padding:10px 14px; text-align:left;
+  font-size:0.65rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase;
+  border-bottom:2px solid rgba(201,168,76,0.3);
+}
+.data-table td {
+  padding:9px 14px; border-bottom:1px solid rgba(203,213,225,0.3);
+  vertical-align:middle; line-height:1.35;
+}
+.data-table tr:last-child td { border-bottom:none; }
+.data-table.light th { background:var(--navy); color:var(--gold); }
+.data-table.light td { color:var(--slate); }
+.data-table.light tr:nth-child(even) td { background:rgba(15,98,146,0.04); }
+.data-table.dark  th { background:rgba(201,168,76,0.1); color:var(--gold); }
+.data-table.dark  td { color:rgba(255,255,255,0.8); }
+.data-table.dark  tr:nth-child(even) td { background:rgba(255,255,255,0.03); }
+
+/* ══════════════════════════════════════════════════════════
+   SPECIFICS
+══════════════════════════════════════════════════════════ */
+/* Code block */
+.code-block {
+  background:#0d1f35; border-radius:4px; padding:16px 18px;
+  font-family:var(--font-mono); font-size:0.68rem; line-height:1.7;
+  border:1px solid rgba(201,168,76,0.1); overflow:hidden;
+}
+.code-field  { color:#5EEAD4; }
+.code-value  { color:#F9A84C; }
+.code-comment{ color:rgba(100,116,139,0.6); font-style:italic; }
+.code-header { color:#C084FC; }
+
+/* KPI card */
+.kpi-card { padding:18px 20px; border-radius:3px; }
+.kpi-val { font-family:var(--font-display); font-size:2.4rem; font-weight:700; line-height:1; }
+.kpi-label { font-size:0.7rem; color:var(--muted); margin-top:5px; letter-spacing:0.04em; }
+.kpi-sub   { font-size:0.65rem; margin-top:3px; font-style:italic; }
+
+/* Timeline dot */
+.timeline-track { position:relative; padding-left:24px; }
+.timeline-track::before { content:''; position:absolute; left:6px; top:0; bottom:0; width:1px; background:rgba(201,168,76,0.25); }
+.timeline-item { position:relative; margin-bottom:16px; }
+.timeline-item::before { content:''; position:absolute; left:-18px; top:5px; width:8px; height:8px; border-radius:50%; border:2px solid var(--gold); background:var(--navy-dk); }
+
+/* Quiz */
+.quiz-q { padding:14px 18px; border-radius:3px; margin-bottom:10px; background:rgba(255,255,255,0.04); border:1px solid rgba(201,168,76,0.12); }
+.quiz-num { font-family:var(--font-mono); font-size:0.65rem; color:var(--gold); letter-spacing:0.1em; margin-bottom:4px; }
+.quiz-text { font-size:0.82rem; color:var(--white); line-height:1.4; }
+.quiz-hint { font-size:0.65rem; color:var(--muted); margin-top:4px; font-style:italic; }
+
+/* Answers */
+.answer-row { display:flex; gap:14px; padding:10px 14px; margin-bottom:8px; border-radius:3px; background:rgba(255,255,255,0.04); border-left:3px solid; }
+
+/* Stat callout */
+.stat-callout { text-align:center; padding:18px 12px; }
+.stat-num { font-family:var(--font-display); font-size:2rem; font-weight:700; line-height:1; }
+.stat-label { font-size:0.65rem; margin-top:6px; letter-spacing:0.06em; text-transform:uppercase; }
+
+/* ══════════════════════════════════════════════════════════
+   TITLE SLIDE
+══════════════════════════════════════════════════════════ */
+.title-slide {
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse at 25% 50%, #0d2a50 0%, #071428 65%);
+  display:flex; overflow:hidden;
+}
+.title-left { flex:0 0 58%; padding:52px 52px; display:flex; flex-direction:column; justify-content:center; position:relative; }
+.title-right {
+  flex:1; background:rgba(255,255,255,0.025);
+  border-left:1px solid rgba(201,168,76,0.1);
+  display:flex; flex-direction:column; justify-content:center; padding:40px 36px;
+  position:relative;
+}
+.title-eyebrow { font-size:0.62rem; color:var(--gold); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:20px; font-family:var(--font-body); font-weight:500; }
+.title-main {
+  font-family:var(--font-display); font-size:3.4rem; font-weight:700;
+  color:var(--white); line-height:1.08; margin-bottom:22px;
+}
+.title-main em { color:var(--gold); font-style:normal; }
+.title-desc { font-size:0.83rem; color:rgba(165,215,232,0.75); line-height:1.7; max-width:360px; margin-bottom:30px; }
+.title-meta { display:flex; gap:24px; }
+.title-meta-item { font-size:0.68rem; color:var(--muted); letter-spacing:0.06em; }
+.title-meta-item strong { display:block; color:var(--gold); font-size:0.85rem; font-family:var(--font-display); }
+
+/* ══════════════════════════════════════════════════════════
+   SUMMARY / DARK SLIDES
+══════════════════════════════════════════════════════════ */
+.summary-item {
+  display:flex; gap:18px; align-items:flex-start;
+  padding:14px 18px; margin-bottom:8px;
+  background:rgba(255,255,255,0.04); border-radius:3px;
+  border:1px solid rgba(201,168,76,0.1);
+}
+.summary-num {
+  width:26px; height:26px; border-radius:50%;
+  background:var(--gold); color:var(--navy-dk);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.72rem; font-weight:700; flex-shrink:0; margin-top:1px;
+}
+.summary-title { font-size:0.82rem; font-weight:600; color:var(--gold); margin-bottom:3px; }
+.summary-body  { font-size:0.75rem; color:rgba(255,255,255,0.7); line-height:1.5; }
+
+/* ══════════════════════════════════════════════════════════
+   THANK YOU SLIDE
+══════════════════════════════════════════════════════════ */
+.thankyou-slide {
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse at 30% 60%, #0d2a50 0%, #071428 65%);
+  display:flex; overflow:hidden;
+}
+.thankyou-left { flex:0 0 55%; padding:50px 52px; display:flex; flex-direction:column; justify-content:center; }
+.thankyou-right {
+  flex:1; background:rgba(255,255,255,0.025);
+  border-left:1px solid rgba(201,168,76,0.1);
+  display:flex; flex-direction:column; justify-content:center; padding:44px 40px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   SCROLLBAR HIDDEN
+══════════════════════════════════════════════════════════ */
+::-webkit-scrollbar { display:none; }
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE NOTE
+══════════════════════════════════════════════════════════ */
+@media (max-width:768px) {
+  .login-box { width:90%; padding:36px 28px; }
+  .title-main { font-size:2.4rem; }
+  .session-name { font-size:2.2rem; }
+}
+
+/* Animations */
+@keyframes shimmer { 0%,100%{opacity:0.4} 50%{opacity:1} }
+.gold-pulse { animation:shimmer 3s ease infinite; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     LOGIN SCREEN
+══════════════════════════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="64" height="64" rx="12" fill="#0a0a0a"/>
+        <circle cx="32" cy="26" r="20" stroke="#C9A84C" stroke-width="2" fill="none"/>
+        <circle cx="32" cy="26" r="17.5" fill="#0d0d0d"/>
+        <circle cx="32" cy="22" r="5.5" fill="#C9A84C" opacity="0.95"/>
+        <path d="M28.5 26 L28.5 33 L35.5 33 L35.5 26 Z" fill="#C9A84C" opacity="0.95"/>
+        <path d="M30 29 L30 33 L34 33 L34 29 Z" fill="#0d0d0d"/>
+        <path d="M30 33 L25 48 L39 48 L34 33 Z" fill="#C9A84C" opacity="0.18"/>
+        <circle cx="32" cy="52" r="5" stroke="#C9A84C" stroke-width="1.8" fill="none"/>
+        <rect x="30.5" y="56.5" width="3" height="5" rx="0.8" fill="#C9A84C"/>
+        <rect x="33.5" y="58" width="3" height="1.8" rx="0.4" fill="#C9A84C"/>
+      </svg>
+      <div class="login-brand">Ask Jacey<span>Payments Domain Training</span></div>
+    </div>
+    <div class="login-title">Masterclass Access</div>
+    <div class="login-sub">CORPORATE BANKING &amp; PAYMENTS PROGRAMME</div>
+    <div class="login-field">
+      <label>Username</label>
+      <input type="text" id="login-user" placeholder="Enter username" autocomplete="off"/>
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="login-pass" placeholder="Enter password"/>
+    </div>
+    <button class="login-btn" onclick="doLogin()">Access Programme</button>
+    <div class="login-error" id="login-err">Invalid credentials. Please check and try again.</div>
+    <div class="login-footer">
+      Restricted access · For authorised participants only<br/>
+      <a href="mailto:askjaceynow@gmail.com">askjaceynow@gmail.com</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PRESENTATION
+══════════════════════════════════════════════════════════ -->
+<div id="presentation">
+<div class="deck">
+<div class="slide-container" id="slide-container">
+
+<!-- Keyboard hint -->
+<div class="key-hint">← → navigate &nbsp;|&nbsp; ESC menu</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 1 — TITLE
+══════════════════════════════════════════════════════════ -->
+<div class="slide active" data-section="Introduction">
+  <div class="title-slide">
+    <!-- Decorative rings -->
+    <div class="deco-ring" style="width:500px;height:500px;top:-180px;left:-120px;"></div>
+    <div class="deco-ring" style="width:300px;height:300px;bottom:-80px;left:180px;"></div>
+
+    <div class="title-left">
+      <div class="gold-bar" style="position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#C9A84C,#9A7A2E);"></div>
+      <div style="padding-left:18px;">
+        <div class="title-eyebrow">Ask Jacey · Domain Training Series</div>
+        <div class="title-main">Corporate Banking<br/>&amp; <em>Payments</em><br/>Masterclass</div>
+        <div class="title-desc">A practitioner-led training programme covering the end-to-end payments landscape — from banking structure to modern payments architecture.</div>
+        <div class="title-meta">
+          <div class="title-meta-item"><strong>5</strong>Sessions</div>
+          <div class="title-meta-item"><strong>39+</strong>Slides</div>
+          <div class="title-meta-item"><strong>90–120</strong>Mins each</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="title-right">
+      <!-- Logo -->
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid rgba(201,168,76,0.12);">
+        <svg width="36" height="36" viewBox="0 0 64 64" fill="none">
+          <rect width="64" height="64" rx="12" fill="#0a0a0a"/>
+          <circle cx="32" cy="26" r="20" stroke="#C9A84C" stroke-width="2" fill="none"/>
+          <circle cx="32" cy="26" r="17.5" fill="#0d0d0d"/>
+          <circle cx="32" cy="22" r="5.5" fill="#C9A84C" opacity="0.95"/>
+          <path d="M28.5 26 L28.5 33 L35.5 33 L35.5 26 Z" fill="#C9A84C" opacity="0.95"/>
+          <path d="M30 29 L30 33 L34 33 L34 29 Z" fill="#0d0d0d"/>
+          <circle cx="32" cy="52" r="5" stroke="#C9A84C" stroke-width="1.8" fill="none"/>
+          <rect x="30.5" y="56.5" width="3" height="5" rx="0.8" fill="#C9A84C"/>
+          <rect x="33.5" y="58" width="3" height="1.8" rx="0.4" fill="#C9A84C"/>
+        </svg>
+        <div>
+          <div style="font-family:var(--font-display);font-size:1.05rem;color:var(--gold);font-weight:600;">Ask Jacey</div>
+          <div style="font-size:0.62rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;">Payments Domain Training</div>
+        </div>
+      </div>
+
+      <div style="font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px;">Programme Overview</div>
+      <div style="display:flex;flex-direction:column;gap:9px;">
+        <div style="display:flex;align-items:center;gap:12px;font-size:0.78rem;">
+          <div style="width:22px;height:22px;border-radius:50%;background:var(--navy);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:var(--gold);font-weight:700;flex-shrink:0;">01</div>
+          <span style="color:var(--gold);font-weight:500;">Banking Landscape</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:0.78rem;">
+          <div style="width:22px;height:22px;border-radius:50%;background:var(--navy);border:1px solid rgba(201,168,76,0.4);display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:rgba(201,168,76,0.5);font-weight:700;flex-shrink:0;">02</div>
+          <span style="color:rgba(255,255,255,0.7);">Payment Methods &amp; Lifecycle</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:0.78rem;">
+          <div style="width:22px;height:22px;border-radius:50%;background:var(--navy);border:1px solid rgba(201,168,76,0.4);display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:rgba(201,168,76,0.5);font-weight:700;flex-shrink:0;">03</div>
+          <span style="color:rgba(255,255,255,0.7);">SWIFT &amp; ISO 20022</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:0.78rem;">
+          <div style="width:22px;height:22px;border-radius:50%;background:var(--navy);border:1px solid rgba(201,168,76,0.4);display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:rgba(201,168,76,0.5);font-weight:700;flex-shrink:0;">04</div>
+          <span style="color:rgba(255,255,255,0.7);">Exception Handling &amp; Operations</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:0.78rem;">
+          <div style="width:22px;height:22px;border-radius:50%;background:var(--navy);border:1px solid rgba(201,168,76,0.4);display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:rgba(201,168,76,0.5);font-weight:700;flex-shrink:0;">05</div>
+          <span style="color:rgba(255,255,255,0.7);">Technology &amp; Future Trends</span>
+        </div>
+      </div>
+
+      <div style="margin-top:auto;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06);font-size:0.65rem;color:rgba(100,116,139,0.6);line-height:1.6;">
+        Trainer Copy · Confidential<br/>
+        <span style="color:rgba(201,168,76,0.5);">askjaceynow@gmail.com</span>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <span class="footer-brand">Ask Jacey</span>
+      <span class="footer-email">askjaceynow@gmail.com</span>
+      <span class="slide-num">1 / 39</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 2 — PROGRAMME AGENDA
+══════════════════════════════════════════════════════════ -->
+<div class="slide slide-bg-light" data-section="Introduction">
+  <div class="slide-header light"><div class="gold-bar"></div>
+    <div class="slide-title light" style="padding-left:14px;">Programme Agenda</div>
+    <div class="slide-subtitle" style="padding-left:14px;">Five sessions · Banking foundations through modern payments architecture</div>
+  </div>
+  <div class="slide-body" style="display:flex;flex-direction:column;justify-content:center;padding-top:16px;">
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;height:320px;">
+      <!-- Session cards -->
+      <div style="background:var(--navy);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="background:linear-gradient(135deg,#152D56,#0B1E3D);padding:16px;flex:1;">
+          <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gold);letter-spacing:0.15em;margin-bottom:10px;">SESSION 01</div>
+          <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--white);line-height:1.15;margin-bottom:12px;">Banking<br/>Landscape</div>
+          <div style="font-size:0.62rem;color:rgba(165,215,232,0.7);line-height:1.55;">Retail vs Wholesale vs Investment Banking · Participants · Regulation</div>
+        </div>
+        <div style="background:var(--gold);padding:8px 12px;font-size:0.6rem;font-weight:600;color:var(--navy-dk);letter-spacing:0.06em;">FOUNDATION</div>
+      </div>
+      <div style="background:#0d2a50;border-radius:4px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="background:linear-gradient(135deg,#0F6292,#0d2a50);padding:16px;flex:1;">
+          <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--sky);letter-spacing:0.15em;margin-bottom:10px;">SESSION 02</div>
+          <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--white);line-height:1.15;margin-bottom:12px;">Payment<br/>Methods</div>
+          <div style="font-size:0.62rem;color:rgba(165,215,232,0.7);line-height:1.55;">Wire · ACH · RTP · 7-Stage Lifecycle · Cross-border routing</div>
+        </div>
+        <div style="background:#0F6292;padding:8px 12px;font-size:0.6rem;font-weight:600;color:var(--white);letter-spacing:0.06em;">CORE RAILS</div>
+      </div>
+      <div style="background:#0d1f35;border-radius:4px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="background:linear-gradient(135deg,#152D56,#071428);padding:16px;flex:1;">
+          <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gold-lt);letter-spacing:0.15em;margin-bottom:10px;">SESSION 03</div>
+          <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--white);line-height:1.15;margin-bottom:12px;">SWIFT &amp;<br/>ISO 20022</div>
+          <div style="font-size:0.62rem;color:rgba(165,215,232,0.7);line-height:1.55;">SWIFT network · MT103 anatomy · BIC codes · ISO migration</div>
+        </div>
+        <div style="background:#C9A84C;padding:8px 12px;font-size:0.6rem;font-weight:600;color:var(--navy-dk);letter-spacing:0.06em;">STANDARDS</div>
+      </div>
+      <div style="background:#1a0a0a;border-radius:4px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="background:linear-gradient(135deg,#3B0C0C,#1a0a0a);padding:16px;flex:1;">
+          <div style="font-family:var(--font-mono);font-size:0.6rem;color:#fca5a5;letter-spacing:0.15em;margin-bottom:10px;">SESSION 04</div>
+          <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--white);line-height:1.15;margin-bottom:12px;">Exceptions<br/>&amp; Ops</div>
+          <div style="font-size:0.62rem;color:rgba(165,215,232,0.7);line-height:1.55;">Failed payments · Investigation · gpi tracking · Reconciliation</div>
+        </div>
+        <div style="background:var(--red);padding:8px 12px;font-size:0.6rem;font-weight:600;color:var(--white);letter-spacing:0.06em;">OPERATIONS</div>
+      </div>
+      <div style="background:#071a10;border-radius:4px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="background:linear-gradient(135deg,#064e29,#071a10);padding:16px;flex:1;">
+          <div style="font-family:var(--font-mono);font-size:0.6rem;color:#6ee7b7;letter-spacing:0.15em;margin-bottom:10px;">SESSION 05</div>
+          <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--white);line-height:1.15;margin-bottom:12px;">Technology<br/>&amp; Trends</div>
+          <div style="font-size:0.62rem;color:rgba(165,215,232,0.7);line-height:1.55;">Architecture · APIs · Open Banking · RTP · AI in Payments</div>
+        </div>
+        <div style="background:var(--green);padding:8px 12px;font-size:0.6rem;font-weight:600;color:var(--white);letter-spacing:0.06em;">FUTURE</div>
+      </div>
+    </div>
+    <div style="margin-top:14px;padding:10px 20px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);border-radius:3px;display:flex;align-items:center;justify-content:center;gap:24px;font-size:0.7rem;color:var(--muted);">
+      <span>⏱ 90–120 mins per session</span>
+      <span style="width:1px;height:14px;background:var(--grid);"></span>
+      <span>💬 Q&amp;A integrated throughout</span>
+      <span style="width:1px;height:14px;background:var(--grid);"></span>
+      <span>🎯 Knowledge check per module</span>
+      <span style="width:1px;height:14px;background:var(--grid);"></span>
+      <span>📋 Trainer notes on every slide</span>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">2 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 3 — SESSION 01 DIVIDER
+══════════════════════════════════════════════════════════ -->
+<div class="slide slide-bg-session" data-section="Session 01 · Banking Landscape">
+  <div class="session-divider">
+    <div class="left-panel">
+      <div class="gold-bar" style="position:absolute;left:0;top:60px;bottom:60px;width:3px;background:linear-gradient(180deg,#C9A84C,#9A7A2E);border-radius:2px;"></div>
+      <div style="padding-left:22px;">
+        <div class="session-number">SESSION · 01 / 05</div>
+        <div class="session-name">Banking<br/>Landscape</div>
+        <div class="session-tagline">Understanding the financial ecosystem where payments originate, flow, and settle — from retail branches to wholesale treasury desks.</div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div style="font-size:0.62rem;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:18px;">In This Session</div>
+      <ul class="session-topics">
+        <li><div><strong>What Banks Do</strong>Core functions: deposits, credit, payments, risk management</div></li>
+        <li><div><strong>Three Banking Pillars</strong>Retail · Wholesale · Investment Banking compared</div></li>
+        <li><div><strong>Payments Ecosystem</strong>Corporate client → bank → clearing → beneficiary</div></li>
+        <li><div><strong>Key Participants</strong>Central banks, correspondents, clearing houses, networks</div></li>
+        <li><div><strong>Regulatory Framework</strong>Fed, ECB, FCA, BIS — who governs what</div></li>
+        <li><div><strong>Essential Terminology</strong>RTGS, Nostro/Vostro, BIC, IBAN, cut-off times</div></li>
+      </ul>
+    </div>
+  </div>
+  <div class="deco-ring" style="width:420px;height:420px;top:-140px;right:-80px;"></div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">3 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 4 — THREE PILLARS OF BANKING
+══════════════════════════════════════════════════════════ -->
+<div class="slide slide-bg-light" data-section="Session 01 · Banking Landscape">
+  <div class="slide-header light"><div class="gold-bar"></div>
+    <div class="slide-title light" style="padding-left:14px;">Three Pillars of Banking</div>
+    <div class="slide-subtitle" style="padding-left:14px;">Retail · Wholesale · Investment Banking — who they serve and how they differ</div>
+  </div>
+  <div class="slide-body" style="display:flex;gap:14px;padding-top:16px;align-items:stretch;">
+
+    <!-- Retail -->
+    <div style="flex:1;background:var(--navy);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="background:var(--teal);padding:14px 18px;">
+        <div style="font-family:var(--font-mono);font-size:0.58rem;color:rgba(255,255,255,0.6);letter-spacing:0.15em;margin-bottom:4px;">PILLAR 01</div>
+        <div style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--white);">Retail Banking</div>
+      </div>
+      <div style="padding:16px 18px;flex:1;display:flex;flex-direction:column;gap:12px;">
+        <div><div style="font-size:0.6rem;color:var(--sky);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px;">Serves</div><div style="font-size:0.78rem;color:var(--white);">Individuals &amp; small businesses</div></div>
+        <div><div style="font-size:0.6rem;color:var(--sky);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px;">Key Products</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <div style="font-size:0.72rem;color:rgba(255,255,255,0.75);padding:4px 8px;background:rgba(255,255,255,0.06);border-radius:2px;">Current &amp; savings accounts</div>
+            <div style="font-size:0.72rem;color:rgba(255,255,255,0.75);padding:4px 8px;background:rgba(255,255,255,0.06);border-radius:2px;">Personal loans &amp; mortgages</div>
+            <div style="font-size:0.72rem;color:rgba(255,255,255,0.75);padding:4px 8px;background:rgba(255,255,255,0.06);border-radius:2px;">Debit / credit cards</div>
+            <div style="font-size:0.72rem;color:rgba(255,255,255,0.75);padding:4px 8px;background:rgba(255,255,255,0.06);border-radius:2px;">Mobile &amp; online banking</div>
+          </div>
+        </div>
+        <div style="margin-top:auto;padding:10px 12px;background:rgba(15,98,146,0.3);border-radius:2px;border-left:2px solid var(--teal);">
+          <div style="font-size:0.6rem;color:var(--sky);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3px;">Payments Focus</div>
+          <div style="font-size:0.72rem;color:var(--white);">Card transactions, direct debits, mobile P2P</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wholesale -->
+    <div style="flex:1;background:var(--navy-dk);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="background:var(--navy);padding:14px 18px;border-bottom:2px solid var(--gold);">
+        <div style="font-family:var(--font-mono);font-size:0.58rem;color:rgba(201,168,76,0.6);letter-spacing:0.15em;margin-bottom:4px;">PILLAR 02</div>
+        <div style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--white);">Wholesale Banking</div>
+      </div>
+      <div style="padding:16px 18px;flex:1;display:flex;flex-direction:column;gap:12px;">
+        <div><div style="font-size:0.6rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px;">Serves</div><div style="font-size:0.78rem;color:var(--white);">Corporates, institutions &amp; governments</div></div>
+        <div><div style="font-size:0.6rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px;">Key Products</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <div style="font-size:0.72rem;color:rgba(255,255,255,0.75);padding:4px 8px;background:rgba(255,255,255,0.06);border-radius:2px;">Cash management &amp; treasury</div>
+            <div style="font-size:0.72rem;color:rgba(255,255,255,0.75);padding:4px 8px;background:rgba(255,255,255,0.06);border-radius:2px;">Trade finance &amp; supply chain</div>
+            <div style="font-size:0.72rem;color:rgba(255,255,255,0.75);padding:4px 8px;background:rgba(255,255,255,0.06);border-radius:2px;">Syndicated loans &amp; revolvers</div>
+            <div style="font-size:0.72rem;color:rgba(255,255,255,0.75);padding:4px 8px;background:rgba(255,255,255,0.06);border-radius:2px;">FX &amp; interest rate products</div>
+          </div>
+        </div>
+        <div style="margin-top:auto;padding:10px 12px;background:rgba(201,168,76,0.08);border-radius:2px;border-left:2px solid var(--gold);">
+          <div style="font-size:0.6rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3px;">Payments Focus</div>
+          <div style="font-size:0.72rem;color:var(--white);">Wire transfers, SWIFT, high-value RTGS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Investment -->
+    <div style="flex:1;background:#0d1f2a;border-radius:4px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="background:linear-gradient(135deg,#7C3AED,#5B21B6);padding:14px 18px;">
+        <div style="font-family:var(--font-mono);font-size:0.58rem;color:rgba(255,255,255,0.6);letter-spacing:0.15em;margin-bottom:4px;">PILLAR 03</div>
+        <div style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--white);">Investment Banking</div>
+      </div>
+      <div style="padding:16px 18px;flex:1;display:flex;flex-direction:column;gap:12px;">
+        <div><div style="font-size:0.6rem;color:#c4b5fd;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px;">Serves</div><div style="font-size:0.78rem;color:var(--white);">Capital markets clients &amp; corporations</div></div>
+        <div><div style="font-size:0.6rem;color:#c4b5fd;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px;">Key Products</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <div style="font-size:0.72rem;color:rgba(255,255,255,0.75);padding:4px 8px;background:rgba(255,255,255,0.06);border-radius:2px;">Equity &amp; debt issuance (IPOs)</div>
+            <div style="font-size:0.72rem;color:rgba(255,255,255,0.75);padding:4px 8px;background:rgba(255,255,255,0.06);border-radius:2px;">M&amp;A advisory</div>
+            <div style="font-size:0.72rem;color:rgba(255,255,255,0.75);padding:4px 8px;background:rgba(255,255,255,0.06);border-radius:2px;">Securities trading &amp; markets</div>
+            <div style="font-size:0.72rem;color:rgba(255,255,255,0.75);padding:4px 8px;background:rgba(255,255,255,0.06);border-radius:2px;">Structured products</div>
+          </div>
+        </div>
+        <div style="margin-top:auto;padding:10px 12px;background:rgba(124,58,237,0.2);border-radius:2px;border-left:2px solid #7C3AED;">
+          <div style="font-size:0.6rem;color:#c4b5fd;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3px;">Payments Focus</div>
+          <div style="font-size:0.72rem;color:var(--white);">Securities settlement, DVP, repo transactions</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key insight panel -->
+    <div style="flex:0 0 200px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);border-radius:4px;padding:20px 18px;display:flex;flex-direction:column;justify-content:space-between;">
+      <div>
+        <div style="font-size:0.62rem;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;">Key Insights</div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div style="font-size:0.72rem;color:rgba(255,255,255,0.8);line-height:1.5;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.08);">Universal banks (Citi, JPMorgan) operate all three pillars simultaneously.</div>
+          <div style="font-size:0.72rem;color:rgba(255,255,255,0.8);line-height:1.5;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.08);">Payments infrastructure is shared — a wire from a retail customer uses the same SWIFT network as a wholesale deal.</div>
+          <div style="font-size:0.72rem;color:rgba(255,255,255,0.8);line-height:1.5;">The higher the value, the more likely RTGS gross settlement is used.</div>
+        </div>
+      </div>
+      <div style="padding-top:14px;border-top:1px solid rgba(201,168,76,0.12);font-size:0.62rem;color:var(--muted);font-style:italic;line-height:1.5;">Trainer: Ask which pillar participants work closest to.</div>
+    </div>
+
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">4 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 5 — PAYMENTS ECOSYSTEM
+══════════════════════════════════════════════════════════ -->
+<div class="slide slide-bg-navy" data-section="Session 01 · Banking Landscape">
+  <div class="slide-header dark"><div class="gold-bar"></div>
+    <div class="slide-title dark" style="padding-left:14px;">The Payments Ecosystem</div>
+    <div class="slide-subtitle" style="padding-left:14px;">How a corporate payment flows from sender to beneficiary — the complete chain</div>
+  </div>
+  <div class="slide-body" style="display:flex;flex-direction:column;justify-content:center;gap:18px;">
+    <!-- Flow diagram -->
+    <div style="display:flex;align-items:stretch;gap:0;background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.1);border-radius:4px;overflow:hidden;">
+      <div style="flex:1;padding:22px 16px;text-align:center;border-right:1px solid rgba(255,255,255,0.06);">
+        <div style="width:48px;height:48px;border-radius:50%;background:rgba(15,98,146,0.3);border:2px solid var(--teal);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.2rem;">🏢</div>
+        <div style="font-size:0.75rem;font-weight:600;color:var(--white);margin-bottom:4px;">Corporate Client</div>
+        <div style="font-size:0.62rem;color:rgba(165,215,232,0.6);">Initiates payment instruction via portal or API</div>
+        <div style="margin-top:10px;font-family:var(--font-mono);font-size:0.58rem;color:var(--gold);background:rgba(201,168,76,0.1);padding:4px 8px;border-radius:100px;">STEP 01</div>
+      </div>
+      <div style="display:flex;align-items:center;padding:0 10px;color:var(--gold);font-size:1rem;">›</div>
+      <div style="flex:1;padding:22px 16px;text-align:center;border-right:1px solid rgba(255,255,255,0.06);">
+        <div style="width:48px;height:48px;border-radius:50%;background:rgba(11,30,61,0.5);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.2rem;">🏦</div>
+        <div style="font-size:0.75rem;font-weight:600;color:var(--white);margin-bottom:4px;">Originating Bank</div>
+        <div style="font-size:0.62rem;color:rgba(165,215,232,0.6);">Validates, enriches &amp; routes the instruction</div>
+        <div style="margin-top:10px;font-family:var(--font-mono);font-size:0.58rem;color:var(--gold);background:rgba(201,168,76,0.1);padding:4px 8px;border-radius:100px;">STEP 02</div>
+      </div>
+      <div style="display:flex;align-items:center;padding:0 10px;color:var(--gold);font-size:1rem;">›</div>
+      <div style="flex:1;padding:22px 16px;text-align:center;border-right:1px solid rgba(255,255,255,0.06);background:rgba(201,168,76,0.04);">
+        <div style="width:48px;height:48px;border-radius:50%;background:rgba(201,168,76,0.15);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.2rem;">⚡</div>
+        <div style="font-size:0.75rem;font-weight:600;color:var(--gold);margin-bottom:4px;">Clearing House</div>
+        <div style="font-size:0.62rem;color:rgba(165,215,232,0.6);">Nets &amp; routes instructions between banks</div>
+        <div style="margin-top:10px;font-family:var(--font-mono);font-size:0.58rem;color:var(--gold);background:rgba(201,168,76,0.1);padding:4px 8px;border-radius:100px;">STEP 03</div>
+      </div>
+      <div style="display:flex;align-items:center;padding:0 10px;color:var(--gold);font-size:1rem;">›</div>
+      <div style="flex:1;padding:22px 16px;text-align:center;border-right:1px solid rgba(255,255,255,0.06);">
+        <div style="width:48px;height:48px;border-radius:50%;background:rgba(11,30,61,0.5);border:2px solid rgba(201,168,76,0.4);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.2rem;">🏦</div>
+        <div style="font-size:0.75rem;font-weight:600;color:var(--white);margin-bottom:4px;">Beneficiary Bank</div>
+        <div style="font-size:0.62rem;color:rgba(165,215,232,0.6);">Receives funds &amp; credits beneficiary account</div>
+        <div style="margin-top:10px;font-family:var(--font-mono);font-size:0.58rem;color:var(--gold);background:rgba(201,168,76,0.1);padding:4px 8px;border-radius:100px;">STEP 04</div>
+      </div>
+      <div style="display:flex;align-items:center;padding:0 10px;color:var(--gold);font-size:1rem;">›</div>
+      <div style="flex:1;padding:22px 16px;text-align:center;">
+        <div style="width:48px;height:48px;border-radius:50%;background:rgba(5,150,105,0.2);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.2rem;">✓</div>
+        <div style="font-size:0.75rem;font-weight:600;color:var(--white);margin-bottom:4px;">Beneficiary</div>
+        <div style="font-size:0.62rem;color:rgba(165,215,232,0.6);">Funds received &amp; credited to account</div>
+        <div style="margin-top:10px;font-family:var(--font-mono);font-size:0.58rem;color:var(--green);background:rgba(5,150,105,0.1);padding:4px 8px;border-radius:100px;">SETTLED</div>
+      </div>
+    </div>
+
+    <!-- Message types below -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+      <div style="padding:12px;background:rgba(255,255,255,0.04);border-radius:3px;border:1px solid rgba(255,255,255,0.06);text-align:center;">
+        <div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--gold);margin-bottom:5px;">INSTRUCTION</div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.7);">Payment order via portal, file, or API</div>
+      </div>
+      <div style="padding:12px;background:rgba(255,255,255,0.04);border-radius:3px;border:1px solid rgba(255,255,255,0.06);text-align:center;">
+        <div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--gold);margin-bottom:5px;">SWIFT MESSAGE</div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.7);">MT103 or pacs.008 (ISO 20022)</div>
+      </div>
+      <div style="padding:12px;background:rgba(255,255,255,0.04);border-radius:3px;border:1px solid rgba(255,255,255,0.06);text-align:center;">
+        <div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--gold);margin-bottom:5px;">SETTLEMENT</div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.7);">RTGS, ACH batch, or RTP network</div>
+      </div>
+      <div style="padding:12px;background:rgba(255,255,255,0.04);border-radius:3px;border:1px solid rgba(255,255,255,0.06);text-align:center;">
+        <div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--gold);margin-bottom:5px;">NOTIFICATION</div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.7);">Credit advice &amp; MT940 statement</div>
+      </div>
+    </div>
+
+    <div style="padding:10px 18px;background:rgba(201,168,76,0.06);border-radius:3px;border-left:2px solid var(--gold);font-size:0.72rem;color:rgba(255,255,255,0.8);font-style:italic;">
+      💡 <strong style="color:var(--gold);">Trainer note:</strong> The clearing house is the most misunderstood participant — analogy: "like a check-splitter between restaurants. It nets obligations so Barclays doesn't need to send 10,000 individual payments to HSBC each day."
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">5 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 6 — KEY PARTICIPANTS
+══════════════════════════════════════════════════════════ -->
+<div class="slide slide-bg-light" data-section="Session 01 · Banking Landscape">
+  <div class="slide-header light"><div class="gold-bar"></div>
+    <div class="slide-title light" style="padding-left:14px;">Key Participants</div>
+    <div class="slide-subtitle" style="padding-left:14px;">Who's who in the payments world — and what role they play</div>
+  </div>
+  <div class="slide-body" style="padding-top:14px;">
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="display:grid;grid-template-columns:1.5fr 1.5fr 2.5fr 1fr;gap:0;background:var(--navy);border-radius:3px;padding:8px 14px;align-items:center;">
+        <div style="font-size:0.6rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;font-weight:600;">Participant</div>
+        <div style="font-size:0.6rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;font-weight:600;">Examples</div>
+        <div style="font-size:0.6rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;font-weight:600;">Role in Payments</div>
+        <div style="font-size:0.6rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;font-weight:600;">Value Type</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.5fr 1.5fr 2.5fr 1fr;gap:0;background:var(--white);border-radius:3px;padding:10px 14px;align-items:center;border:1px solid var(--grid);">
+        <div style="font-size:0.78rem;font-weight:600;color:var(--navy);">Central Banks</div>
+        <div style="font-size:0.72rem;color:var(--muted);font-style:italic;">Fed, ECB, Bank of England</div>
+        <div style="font-size:0.72rem;color:var(--slate);">Operate RTGS systems; set monetary policy; act as banker to commercial banks</div>
+        <div><span class="tag tag-gold">High Value</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.5fr 1.5fr 2.5fr 1fr;gap:0;background:rgba(15,98,146,0.04);border-radius:3px;padding:10px 14px;align-items:center;border:1px solid var(--grid);">
+        <div style="font-size:0.78rem;font-weight:600;color:var(--navy);">Correspondent Banks</div>
+        <div style="font-size:0.72rem;color:var(--muted);font-style:italic;">JPMorgan, Citi, Deutsche Bank</div>
+        <div style="font-size:0.72rem;color:var(--slate);">Provide cross-border payment routing for banks without direct access to foreign markets</div>
+        <div><span class="tag tag-teal">Cross-border</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.5fr 1.5fr 2.5fr 1fr;gap:0;background:var(--white);border-radius:3px;padding:10px 14px;align-items:center;border:1px solid var(--grid);">
+        <div style="font-size:0.78rem;font-weight:600;color:var(--navy);">Clearing Houses</div>
+        <div style="font-size:0.72rem;color:var(--muted);font-style:italic;">CHIPS, CHAPS, EBA Clearing</div>
+        <div style="font-size:0.72rem;color:var(--slate);">Net payment obligations between banks; reduce settlement risk and liquidity needs</div>
+        <div><span class="tag tag-gold">All Values</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.5fr 1.5fr 2.5fr 1fr;gap:0;background:rgba(15,98,146,0.04);border-radius:3px;padding:10px 14px;align-items:center;border:1px solid var(--grid);">
+        <div style="font-size:0.78rem;font-weight:600;color:var(--navy);">Payment Networks</div>
+        <div style="font-size:0.72rem;color:var(--muted);font-style:italic;">SWIFT, Visa, Mastercard, RTP</div>
+        <div style="font-size:0.72rem;color:var(--slate);">Provide messaging rails, standards, and connectivity for financial institutions globally</div>
+        <div><span class="tag tag-teal">Universal</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.5fr 1.5fr 2.5fr 1fr;gap:0;background:var(--white);border-radius:3px;padding:10px 14px;align-items:center;border:1px solid var(--grid);">
+        <div style="font-size:0.78rem;font-weight:600;color:var(--navy);">FinTechs &amp; PSPs</div>
+        <div style="font-size:0.72rem;color:var(--muted);font-style:italic;">Wise, Stripe, Adyen, GoCardless</div>
+        <div style="font-size:0.72rem;color:var(--slate);">Enable access to payment rails for non-bank entities; provide payment processing interfaces</div>
+        <div><span class="tag tag-green">Retail/SME</span></div>
+      </div>
+    </div>
+    <div style="margin-top:10px;padding:10px 18px;background:rgba(201,168,76,0.05);border-radius:3px;border-left:2px solid var(--gold);font-size:0.7rem;color:var(--slate);font-style:italic;">
+      💡 <strong>Trainer:</strong> Ask "Where does your company sit in this table?" Most participants are corporate clients — some treasury teams act almost like internal banks.
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">6 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 7 — CORE TERMINOLOGY
+══════════════════════════════════════════════════════════ -->
+<div class="slide slide-bg-navy" data-section="Session 01 · Banking Landscape">
+  <div class="slide-header dark"><div class="gold-bar"></div>
+    <div class="slide-title dark" style="padding-left:14px;">Essential Terminology</div>
+    <div class="slide-subtitle" style="padding-left:14px;">Terms every payments professional must know — and own</div>
+  </div>
+  <div class="slide-body" style="padding-top:14px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="padding:14px 16px;background:rgba(255,255,255,0.04);border-radius:3px;border:1px solid rgba(201,168,76,0.15);border-left:3px solid var(--gold);">
+        <div style="font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--gold);margin-bottom:5px;">RTGS</div>
+        <div style="font-size:0.75rem;color:rgba(255,255,255,0.8);line-height:1.5;">Real-Time Gross Settlement — each payment settled individually, in real time, with finality. No netting. Used for high-value urgent payments (Fedwire, TARGET2, CHAPS).</div>
+      </div>
+      <div style="padding:14px 16px;background:rgba(255,255,255,0.04);border-radius:3px;border:1px solid rgba(15,98,146,0.3);border-left:3px solid var(--teal);">
+        <div style="font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--sky);margin-bottom:5px;">Nostro / Vostro</div>
+        <div style="font-size:0.75rem;color:rgba(255,255,255,0.8);line-height:1.5;"><strong style="color:var(--gold);">Nostro</strong> = "our" account held at another bank. <strong style="color:var(--gold);">Vostro</strong> = "their" account held at our bank. Same account, different perspective — critical for cross-border payments.</div>
+      </div>
+      <div style="padding:14px 16px;background:rgba(255,255,255,0.04);border-radius:3px;border:1px solid rgba(201,168,76,0.15);border-left:3px solid var(--gold);">
+        <div style="font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--gold);margin-bottom:5px;">BIC / IBAN</div>
+        <div style="font-size:0.75rem;color:rgba(255,255,255,0.8);line-height:1.5;"><strong style="color:var(--gold);">BIC</strong> (Bank Identifier Code) = identifies the bank. <strong style="color:var(--gold);">IBAN</strong> = identifies the account. Both required for international transfers. ABA routing number used in the US.</div>
+      </div>
+      <div style="padding:14px 16px;background:rgba(255,255,255,0.04);border-radius:3px;border:1px solid rgba(15,98,146,0.3);border-left:3px solid var(--teal);">
+        <div style="font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--sky);margin-bottom:5px;">Correspondent Banking</div>
+        <div style="font-size:0.75rem;color:rgba(255,255,255,0.8);line-height:1.5;">A bank that processes payments on behalf of another bank in a given currency/geography. Each hop adds time, cost, and potential risk.</div>
+      </div>
+      <div style="padding:14px 16px;background:rgba(255,255,255,0.04);border-radius:3px;border:1px solid rgba(201,168,76,0.15);border-left:3px solid var(--gold);">
+        <div style="font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--gold);margin-bottom:5px;">Intraday Liquidity</div>
+        <div style="font-size:0.75rem;color:rgba(255,255,255,0.8);line-height:1.5;">Available funds to meet payment obligations throughout the day. Banks must manage liquidity across multiple currencies and time zones simultaneously.</div>
+      </div>
+      <div style="padding:14px 16px;background:rgba(255,255,255,0.04);border-radius:3px;border:1px solid rgba(15,98,146,0.3);border-left:3px solid var(--teal);">
+        <div style="font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--sky);margin-bottom:5px;">Cut-off Time</div>
+        <div style="font-size:0.75rem;color:rgba(255,255,255,0.8);line-height:1.5;">The deadline by which payment instructions must be submitted for same-day processing. Missing cut-off = next business day processing. Different per rail and geography.</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;padding:10px 18px;background:rgba(201,168,76,0.06);border-radius:3px;border-left:2px solid var(--gold);font-size:0.7rem;color:rgba(255,255,255,0.7);font-style:italic;">
+      💡 <strong style="color:var(--gold);">Trainer:</strong> Nostro/Vostro always confuses delegates. Use whiteboard to draw it: "Same €10M, two banks, two perspectives." Then ask: "Who funds the Nostro account?" — answer: the originating bank.
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">7 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 8 — SESSION 01 SUMMARY
+══════════════════════════════════════════════════════════ -->
+<div class="slide slide-bg-session" data-section="Session 01 · Banking Landscape">
+  <div class="slide-header dark" style="background:rgba(7,20,40,0.8);"><div class="gold-bar"></div>
+    <div class="slide-title dark" style="padding-left:14px;">Session 01 · Key Takeaways</div>
+    <div class="slide-subtitle" style="padding-left:14px;">Banking Landscape — what we covered</div>
+  </div>
+  <div class="slide-body" style="padding-top:16px;display:flex;flex-direction:column;gap:10px;">
+    <div class="summary-item"><div class="summary-num">1</div><div><div class="summary-title">Three Banking Pillars</div><div class="summary-body">Retail (individuals), Wholesale (corporates), Investment Banking (capital markets) serve different clients with distinct payment needs and volumes.</div></div></div>
+    <div class="summary-item"><div class="summary-num">2</div><div><div class="summary-title">Payments Ecosystem</div><div class="summary-body">Every payment flows: Corporate Client → Originating Bank → Clearing House → Beneficiary Bank → Beneficiary. The clearing house is the netting engine.</div></div></div>
+    <div class="summary-item"><div class="summary-num">3</div><div><div class="summary-title">Key Participants &amp; Roles</div><div class="summary-body">Central banks, correspondent banks, clearing houses, payment networks, and FinTechs all play distinct, complementary roles.</div></div></div>
+    <div class="summary-item"><div class="summary-num">4</div><div><div class="summary-title">Essential Vocabulary</div><div class="summary-body">RTGS, Nostro/Vostro, BIC, IBAN, correspondent banking, intraday liquidity — these terms underpin everything that follows.</div></div></div>
+    <div style="margin-top:4px;padding:12px 18px;background:rgba(201,168,76,0.08);border-radius:3px;border:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-size:0.72rem;color:var(--gold);font-weight:500;">Quick Check: Name the 5 participant types · Explain Nostro vs Vostro · Name one RTGS system</div>
+      <div style="font-size:0.62rem;color:var(--muted);">Up next → Session 02: Payment Methods &amp; Lifecycle</div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">8 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 9 — SESSION 02 DIVIDER
+══════════════════════════════════════════════════════════ -->
+<div class="slide" style="background:linear-gradient(135deg,#071428 0%,#0d2a50 50%,#071428 100%);" data-section="Session 02 · Payment Methods">
+  <div class="session-divider">
+    <div class="left-panel">
+      <div class="gold-bar" style="position:absolute;left:0;top:60px;bottom:60px;width:3px;background:linear-gradient(180deg,#A5D7E8,#0F6292);border-radius:2px;"></div>
+      <div style="padding-left:22px;">
+        <div class="session-number" style="color:var(--sky);">SESSION · 02 / 05</div>
+        <div class="session-name">Payment<br/>Methods &amp;<br/>Lifecycle</div>
+        <div class="session-tagline">The different roads a payment can take — and what happens at each stage of its journey from instruction to settlement.</div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div style="font-size:0.62rem;color:var(--sky);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:18px;">In This Session</div>
+      <ul class="session-topics">
+        <li><div><strong>Payment Methods Overview</strong>Wire, ACH, RTP, Card — when to use each</div></li>
+        <li><div><strong>Wire vs ACH vs RTP</strong>Side-by-side comparison table</div></li>
+        <li><div><strong>7-Stage Payment Lifecycle</strong>Initiation through Reconciliation — fully mapped</div></li>
+        <li><div><strong>Cross-Border Routing</strong>Correspondent chains, Nostro flows, SWIFT hops</div></li>
+        <li><div><strong>Timing &amp; Cut-offs</strong>Why timing matters in payments operations</div></li>
+      </ul>
+    </div>
+  </div>
+  <div class="deco-ring" style="width:380px;height:380px;bottom:-100px;right:-60px;border-color:rgba(165,215,232,0.08);"></div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">9 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 10 — WIRE vs ACH vs RTP TABLE
+══════════════════════════════════════════════════════════ -->
+<div class="slide slide-bg-light" data-section="Session 02 · Payment Methods">
+  <div class="slide-header light"><div class="gold-bar"></div>
+    <div class="slide-title light" style="padding-left:14px;">Wire vs ACH vs RTP — Side-by-Side</div>
+    <div class="slide-subtitle" style="padding-left:14px;">Comparing the three core corporate payment rails across all dimensions</div>
+  </div>
+  <div class="slide-body" style="padding-top:14px;">
+    <table class="data-table light" style="width:100%;">
+      <thead>
+        <tr>
+          <th style="width:18%;">Attribute</th>
+          <th style="width:27%;text-align:center;background:#0B1E3D;color:#C9A84C;">⚡ Wire Transfer</th>
+          <th style="width:27%;text-align:center;background:#0F6292;color:white;">📦 ACH / BACS</th>
+          <th style="width:28%;text-align:center;background:#059669;color:white;">⚡ Real-Time Payments</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="font-weight:600;color:var(--navy);">Settlement</td><td style="text-align:center;">Real-time / same-day</td><td style="text-align:center;">T+1 to T+3 (batched)</td><td style="text-align:center;">Seconds — 24/7/365</td></tr>
+        <tr><td style="font-weight:600;color:var(--navy);">Finality</td><td style="text-align:center;"><span class="tag tag-green">Irrevocable</span></td><td style="text-align:center;"><span class="tag tag-red">Reversible 24h</span></td><td style="text-align:center;"><span class="tag tag-green">Final immediately</span></td></tr>
+        <tr><td style="font-weight:600;color:var(--navy);">Value Limit</td><td style="text-align:center;">No upper limit</td><td style="text-align:center;">Low to medium</td><td style="text-align:center;">Typically £/$/€1M cap</td></tr>
+        <tr><td style="font-weight:600;color:var(--navy);">Cost per Item</td><td style="text-align:center;">$15–$50+</td><td style="text-align:center;">Fractions of a cent</td><td style="text-align:center;">Low to moderate</td></tr>
+        <tr><td style="font-weight:600;color:var(--navy);">Availability</td><td style="text-align:center;">Business hours</td><td style="text-align:center;">Business days</td><td style="text-align:center;">24/7/365 instant</td></tr>
+        <tr><td style="font-weight:600;color:var(--navy);">Best Use Case</td><td style="text-align:center;">Cross-border, urgent</td><td style="text-align:center;">Payroll, vendors, DDs</td><td style="text-align:center;">Instant refunds, P2P</td></tr>
+        <tr><td style="font-weight:600;color:var(--navy);">Typical Standard</td><td style="text-align:center;font-family:var(--font-mono);font-size:0.7rem;">MT103 / pacs.008</td><td style="text-align:center;font-family:var(--font-mono);font-size:0.7rem;">NACHA / Bacs file</td><td style="text-align:center;font-family:var(--font-mono);font-size:0.7rem;">ISO 20022 pacs.008</td></tr>
+        <tr><td style="font-weight:600;color:var(--navy);">Recall Risk</td><td style="text-align:center;color:var(--green);">Very low</td><td style="text-align:center;color:var(--red);">Higher (D+1 returns)</td><td style="text-align:center;color:var(--green);">Very low</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;padding:10px 18px;background:rgba(201,168,76,0.05);border-radius:3px;border-left:2px solid var(--gold);font-size:0.7rem;color:var(--slate);font-style:italic;">
+      💡 <strong>Trainer:</strong> Common Q: "Why use ACH if RTP is instant?" — ACH is far cheaper for bulk volume. Payroll = thousands of entries in one batch file. RTP is best for individual, time-sensitive payments. Different tools for different jobs.
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">10 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 11 — 7-STAGE PAYMENT LIFECYCLE
+══════════════════════════════════════════════════════════ -->
+<div class="slide slide-bg-navy" data-section="Session 02 · Payment Methods">
+  <div class="slide-header dark"><div class="gold-bar"></div>
+    <div class="slide-title dark" style="padding-left:14px;">The Payment Lifecycle</div>
+    <div class="slide-subtitle" style="padding-left:14px;">Seven stages every payment passes through — from instruction to confirmation</div>
+  </div>
+  <div class="slide-body" style="padding-top:16px;display:flex;flex-direction:column;gap:14px;">
+    <!-- Lifecycle flow -->
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;">
+      <div style="background:linear-gradient(135deg,#152D56,#0B1E3D);border-radius:3px;padding:14px 8px;text-align:center;position:relative;">
+        <div style="width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--navy-dk);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;margin:0 auto 9px;">1</div>
+        <div style="font-size:0.72rem;font-weight:600;color:var(--white);margin-bottom:5px;">Initiation</div>
+        <div style="font-size:0.6rem;color:rgba(165,215,232,0.6);line-height:1.4;">Client submits instruction via portal, file, or API</div>
+      </div>
+      <div style="background:linear-gradient(135deg,#0F6292,#0a4d72);border-radius:3px;padding:14px 8px;text-align:center;">
+        <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.2);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;margin:0 auto 9px;">2</div>
+        <div style="font-size:0.72rem;font-weight:600;color:var(--white);margin-bottom:5px;">Validation</div>
+        <div style="font-size:0.6rem;color:rgba(255,255,255,0.6);line-height:1.4;">Mandatory field checks, duplicate detection, AML screening</div>
+      </div>
+      <div style="background:linear-gradient(135deg,#064e29,#043d20);border-radius:3px;padding:14px 8px;text-align:center;">
+        <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.2);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;margin:0 auto 9px;">3</div>
+        <div style="font-size:0.72rem;font-weight:600;color:var(--white);margin-bottom:5px;">Enrichment</div>
+        <div style="font-size:0.6rem;color:rgba(255,255,255,0.6);line-height:1.4;">BIC lookup, FX rate, correspondent routing, fees</div>
+      </div>
+      <div style="background:linear-gradient(135deg,#3B0C0C,#2d0808);border-radius:3px;padding:14px 8px;text-align:center;">
+        <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.2);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;margin:0 auto 9px;">4</div>
+        <div style="font-size:0.72rem;font-weight:600;color:var(--white);margin-bottom:5px;">Routing</div>
+        <div style="font-size:0.6rem;color:rgba(255,255,255,0.6);line-height:1.4;">Select optimal rail, network, and correspondent path</div>
+      </div>
+      <div style="background:linear-gradient(135deg,#5B21B6,#4c1d95);border-radius:3px;padding:14px 8px;text-align:center;">
+        <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.2);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;margin:0 auto 9px;">5</div>
+        <div style="font-size:0.72rem;font-weight:600;color:var(--white);margin-bottom:5px;">Clearing</div>
+        <div style="font-size:0.6rem;color:rgba(255,255,255,0.6);line-height:1.4;">Instruction sent to clearing house or correspondent bank</div>
+      </div>
+      <div style="background:linear-gradient(135deg,#92400e,#78350f);border-radius:3px;padding:14px 8px;text-align:center;">
+        <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.2);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;margin:0 auto 9px;">6</div>
+        <div style="font-size:0.72rem;font-weight:600;color:var(--white);margin-bottom:5px;">Settlement</div>
+        <div style="font-size:0.6rem;color:rgba(255,255,255,0.6);line-height:1.4;">Funds move between banks via RTGS or netted batch</div>
+      </div>
+      <div style="background:linear-gradient(135deg,#065f46,#064e3b);border-radius:3px;padding:14px 8px;text-align:center;">
+        <div style="width:26px;height:26px;border-radius:50%;background:var(--green);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;margin:0 auto 9px;">7</div>
+        <div style="font-size:0.72rem;font-weight:600;color:var(--white);margin-bottom:5px;">Reconciliation</div>
+        <div style="font-size:0.6rem;color:rgba(255,255,255,0.6);line-height:1.4;">Confirm receipt, update ledgers, notify client</div>
+      </div>
+    </div>
+
+    <!-- Risk and timing annotations -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="padding:12px 16px;background:rgba(220,38,38,0.08);border-radius:3px;border:1px solid rgba(220,38,38,0.2);">
+        <div style="font-size:0.6rem;color:#f87171;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">🔴 Where Exceptions Occur Most</div>
+        <div style="font-size:0.72rem;color:rgba(255,255,255,0.75);line-height:1.5;">Validation (wrong/missing data) · Clearing (network reject) · Settlement (liquidity shortfall) · Reconciliation (unmatched items)</div>
+      </div>
+      <div style="padding:12px 16px;background:rgba(201,168,76,0.06);border-radius:3px;border:1px solid rgba(201,168,76,0.15);">
+        <div style="font-size:0.6rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">⚡ Time-Critical Zone</div>
+        <div style="font-size:0.72rem;color:rgba(255,255,255,0.75);line-height:1.5;">Stages 2–4 (Validation → Routing) must complete within milliseconds for RTP. For SWIFT, this takes minutes to hours across correspondents.</div>
+      </div>
+    </div>
+
+    <div style="padding:10px 18px;background:rgba(255,255,255,0.03);border-radius:3px;border-left:2px solid var(--gold);font-size:0.7rem;color:rgba(255,255,255,0.7);font-style:italic;">
+      💡 <strong style="color:var(--gold);">Trainer:</strong> Walk through with a live example — "You wire £500,000 to a supplier in Germany. Here's what happens in the next 4 hours." This slide becomes their mental map for everything else in the course.
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">11 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 12 — SESSION 02 SUMMARY
+══════════════════════════════════════════════════════════ -->
+<div class="slide" style="background:linear-gradient(135deg,#071428 0%,#0d2a50 50%,#071428 100%);" data-section="Session 02 · Payment Methods">
+  <div class="slide-header dark" style="background:rgba(7,20,40,0.8);"><div class="gold-bar" style="background:linear-gradient(180deg,#A5D7E8,#0F6292);"></div>
+    <div class="slide-title dark" style="padding-left:14px;">Session 02 · Key Takeaways</div>
+    <div class="slide-subtitle" style="padding-left:14px;">Payment Methods &amp; Lifecycle — what we covered</div>
+  </div>
+  <div class="slide-body" style="padding-top:16px;display:flex;flex-direction:column;gap:10px;">
+    <div class="summary-item"><div class="summary-num" style="background:var(--teal);">1</div><div><div class="summary-title" style="color:var(--sky);">Different Rails for Different Needs</div><div class="summary-body">Wire = irrevocable, high-value, expensive. ACH = cheap, bulk, reversible. RTP = instant, 24/7, final. No single "best" — context decides.</div></div></div>
+    <div class="summary-item"><div class="summary-num" style="background:var(--teal);">2</div><div><div class="summary-title" style="color:var(--sky);">The 7-Stage Lifecycle</div><div class="summary-body">Initiation → Validation → Enrichment → Routing → Clearing → Settlement → Reconciliation. Every payment follows this path regardless of rail.</div></div></div>
+    <div class="summary-item"><div class="summary-num" style="background:var(--teal);">3</div><div><div class="summary-title" style="color:var(--sky);">Cross-Border Adds Complexity</div><div class="summary-body">International payments involve correspondent chains, Nostro/Vostro funding, multiple SWIFT hops, and potential FX conversion at each stage.</div></div></div>
+    <div style="margin-top:4px;padding:12px 18px;background:rgba(15,98,146,0.1);border-radius:3px;border:1px solid rgba(15,98,146,0.3);display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-size:0.72rem;color:var(--sky);font-weight:500;">Quick Check: Name the 7 stages · Explain why ACH is still used over RTP · What is RTGS?</div>
+      <div style="font-size:0.62rem;color:var(--muted);">Up next → Session 03: SWIFT &amp; ISO 20022</div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">12 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 13 — SESSION 03 DIVIDER
+══════════════════════════════════════════════════════════ -->
+<div class="slide" style="background:linear-gradient(135deg,#050e1c 0%,#0d2244 50%,#050e1c 100%);" data-section="Session 03 · SWIFT & ISO 20022">
+  <div class="session-divider">
+    <div class="left-panel">
+      <div class="gold-bar" style="position:absolute;left:0;top:60px;bottom:60px;width:3px;background:linear-gradient(180deg,#C9A84C,#E8CC80);border-radius:2px;"></div>
+      <div style="padding-left:22px;">
+        <div class="session-number">SESSION · 03 / 05</div>
+        <div class="session-name">SWIFT &amp;<br/>ISO 20022</div>
+        <div class="session-tagline">The global messaging standards that banks use to communicate — and the migration from legacy formats to richer, structured data.</div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div style="font-size:0.62rem;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:18px;">In This Session</div>
+      <ul class="session-topics">
+        <li><div><strong>What is SWIFT?</strong>Network, scale, purpose — and what it is NOT</div></li>
+        <li><div><strong>BIC Code Anatomy</strong>Decoding bank identifier codes</div></li>
+        <li><div><strong>MT103 Deep Dive</strong>Field-by-field breakdown of the core payment message</div></li>
+        <li><div><strong>SWIFT Message Categories</strong>MT1xx through MT9xx — what they do</div></li>
+        <li><div><strong>ISO 20022 Migration</strong>From MT to MX — why it matters and what changes</div></li>
+        <li><div><strong>Benefits &amp; Business Impact</strong>Richer data, better compliance, smarter automation</div></li>
+      </ul>
+    </div>
+  </div>
+  <div class="deco-ring" style="width:350px;height:350px;top:-80px;right:-60px;border-color:rgba(201,168,76,0.1);"></div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">13 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 14 — MT103 ANATOMY
+══════════════════════════════════════════════════════════ -->
+<div class="slide slide-bg-navy" data-section="Session 03 · SWIFT & ISO 20022">
+  <div class="slide-header dark"><div class="gold-bar"></div>
+    <div class="slide-title dark" style="padding-left:14px;">Anatomy of an MT103</div>
+    <div class="slide-subtitle" style="padding-left:14px;">The most common cross-border payment message — field by field</div>
+  </div>
+  <div class="slide-body" style="padding-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+    <!-- Code block -->
+    <div class="code-block" style="height:100%;overflow:auto;">
+      <div class="code-comment">// SWIFT MT103 — Customer Credit Transfer</div>
+      <br/>
+      <div><span class="code-header">{1:F01DEUTDEBBAXXX0000000000}</span></div>
+      <div><span class="code-header">{2:I103CHASUS33XXXXN}</span></div>
+      <div><span class="code-header">{4:</span></div>
+      <br/>
+      <div><span class="code-field">:20:</span><span class="code-value">TXNREF001234</span> <span class="code-comment">// Reference</span></div>
+      <div><span class="code-field">:23B:</span><span class="code-value">CRED</span> <span class="code-comment">// Banking Priority</span></div>
+      <div><span class="code-field">:32A:</span><span class="code-value">240115USD150000,</span> <span class="code-comment">// Value Date, CCY, Amount</span></div>
+      <div><span class="code-field">:50K:</span><span class="code-value">/123456789</span></div>
+      <div style="padding-left:20px;"><span class="code-value">ACME CORPORATION</span></div>
+      <div style="padding-left:20px;"><span class="code-value">123 BROADWAY NEW YORK</span> <span class="code-comment">// Ordering Customer</span></div>
+      <div><span class="code-field">:57A:</span><span class="code-value">CHASUS33XXX</span> <span class="code-comment">// Beneficiary Institution</span></div>
+      <div><span class="code-field">:59:</span><span class="code-value">/DE89370400440532013000</span></div>
+      <div style="padding-left:20px;"><span class="code-value">GLOBAL SUPPLIES LTD BERLIN</span> <span class="code-comment">// Beneficiary</span></div>
+      <div><span class="code-field">:70:</span><span class="code-value">INVOICE 2024-0456 MAY GOODS</span> <span class="code-comment">// Remittance Info</span></div>
+      <div><span class="code-field">:71A:</span><span class="code-value">OUR</span> <span class="code-comment">// Charge Bearer (OUR/SHA/BEN)</span></div>
+      <br/>
+      <div><span class="code-header">-&#125;</span></div>
+    </div>
+
+    <!-- Field explainer -->
+    <div style="display:flex;flex-direction:column;gap:7px;overflow:auto;">
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 10px;background:rgba(255,255,255,0.04);border-radius:3px;border-left:2px solid var(--gold);">
+        <div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--gold);min-width:30px;font-weight:600;">:20:</div>
+        <div><div style="font-size:0.72rem;font-weight:600;color:var(--white);">Transaction Reference</div><div style="font-size:0.65rem;color:var(--muted);">Unique identifier — used for tracking and investigation</div></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 10px;background:rgba(255,255,255,0.04);border-radius:3px;border-left:2px solid #5EEAD4;">
+        <div style="font-family:var(--font-mono);font-size:0.62rem;color:#5EEAD4;min-width:30px;font-weight:600;">:32A:</div>
+        <div><div style="font-size:0.72rem;font-weight:600;color:var(--white);">Value Date, Currency &amp; Amount</div><div style="font-size:0.65rem;color:var(--muted);">YYMMDD + ISO currency code + amount. Critical for settlement timing.</div></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 10px;background:rgba(255,255,255,0.04);border-radius:3px;border-left:2px solid #F9A84C;">
+        <div style="font-family:var(--font-mono);font-size:0.62rem;color:#F9A84C;min-width:30px;font-weight:600;">:50K:</div>
+        <div><div style="font-size:0.72rem;font-weight:600;color:var(--white);">Ordering Customer</div><div style="font-size:0.65rem;color:var(--muted);">The entity instructing the payment — name and address required</div></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 10px;background:rgba(255,255,255,0.04);border-radius:3px;border-left:2px solid #C084FC;">
+        <div style="font-family:var(--font-mono);font-size:0.62rem;color:#C084FC;min-width:30px;font-weight:600;">:57A:</div>
+        <div><div style="font-size:0.72rem;font-weight:600;color:var(--white);">Beneficiary Institution</div><div style="font-size:0.65rem;color:var(--muted);">The bank holding the beneficiary's account — identified by BIC</div></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 10px;background:rgba(255,255,255,0.04);border-radius:3px;border-left:2px solid #86EFAC;">
+        <div style="font-family:var(--font-mono);font-size:0.62rem;color:#86EFAC;min-width:30px;font-weight:600;">:59:</div>
+        <div><div style="font-size:0.72rem;font-weight:600;color:var(--white);">Beneficiary</div><div style="font-size:0.65rem;color:var(--muted);">Account number (IBAN) + name + address of the payment recipient</div></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 10px;background:rgba(255,255,255,0.04);border-radius:3px;border-left:2px solid #FCD34D;">
+        <div style="font-family:var(--font-mono);font-size:0.62rem;color:#FCD34D;min-width:30px;font-weight:600;">:70:</div>
+        <div><div style="font-size:0.72rem;font-weight:600;color:var(--white);">Remittance Information</div><div style="font-size:0.65rem;color:var(--muted);">Invoice reference, payment purpose — key for reconciliation</div></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:10px;background:rgba(220,38,38,0.08);border-radius:3px;border-left:2px solid var(--red);">
+        <div style="font-family:var(--font-mono);font-size:0.62rem;color:#f87171;min-width:30px;font-weight:600;">:71A:</div>
+        <div><div style="font-size:0.72rem;font-weight:600;color:var(--white);">⚠ Charge Bearer — High Impact Field</div><div style="font-size:0.65rem;color:var(--muted);line-height:1.5;"><strong style="color:var(--gold);">OUR</strong> = sender pays all fees · <strong style="color:var(--gold);">SHA</strong> = shared (most common) · <strong style="color:var(--gold);">BEN</strong> = beneficiary pays all. Disputes arise when client expects OUR but gets SHA.</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">14 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 15 — ISO 20022 MIGRATION
+══════════════════════════════════════════════════════════ -->
+<div class="slide slide-bg-light" data-section="Session 03 · SWIFT & ISO 20022">
+  <div class="slide-header light"><div class="gold-bar"></div>
+    <div class="slide-title light" style="padding-left:14px;">ISO 20022 — The Great Migration</div>
+    <div class="slide-subtitle" style="padding-left:14px;">From legacy MT text formats to rich, structured XML messaging — and why it changes everything</div>
+  </div>
+  <div class="slide-body" style="padding-top:14px;display:flex;flex-direction:column;gap:12px;">
+    <!-- MT vs MX comparison -->
+    <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:stretch;">
+      <div class="code-block" style="border-top:3px solid var(--red);">
+        <div style="font-family:var(--font-body);font-size:0.62rem;color:#f87171;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;">LEGACY — MT103</div>
+        <div class="code-field">:20:TXNREF001234</div>
+        <div class="code-field">:32A:240115USD150000,</div>
+        <div class="code-field">:50K:/123456789</div>
+        <div class="code-value">ACME CORP NEW YORK</div>
+        <div class="code-field">:59:/DE8937...</div>
+        <div class="code-value">GLOBAL SUPPLIES</div>
+        <div class="code-field">:70:INV 2024-0456</div>
+        <br/>
+        <div class="code-comment">Plain text · ~200 data fields</div>
+        <div class="code-comment">Proprietary encoding</div>
+        <div class="code-comment">Character truncation common</div>
+        <div class="code-comment">Limited remittance data</div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;padding:0 8px;">
+        <div style="font-size:1.4rem;color:var(--gold);">→</div>
+        <div style="font-size:0.6rem;color:var(--muted);text-align:center;line-height:1.6;">2023–2025<br/>Migration<br/>Window</div>
+      </div>
+
+      <div class="code-block" style="border-top:3px solid var(--green);">
+        <div style="font-family:var(--font-body);font-size:0.62rem;color:#6ee7b7;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;">ISO 20022 — pacs.008</div>
+        <div style="color:#86EFAC;">&lt;FIToFICstmrCdtTrf&gt;</div>
+        <div style="padding-left:12px;color:#5EEAD4;">&lt;GrpHdr&gt;</div>
+        <div style="padding-left:24px;color:#5EEAD4;">&lt;MsgId&gt;<span class="code-value">TXNREF001234</span>&lt;/MsgId&gt;</div>
+        <div style="padding-left:24px;color:#5EEAD4;">&lt;IntrBkSttlmDt&gt;<span class="code-value">2024-01-15</span>&lt;/&gt;</div>
+        <div style="padding-left:12px;color:#5EEAD4;">&lt;CdtTrfTxInf&gt;</div>
+        <div style="padding-left:24px;color:#FCD34D;">&lt;Amt Ccy="USD"&gt;<span class="code-value">150000</span>&lt;/&gt;</div>
+        <div style="padding-left:24px;color:#C084FC;">&lt;Purp&gt;&lt;Cd&gt;<span class="code-value">GDDS</span>&lt;/&gt;&lt;/&gt;</div>
+        <div style="padding-left:24px;color:#F9A84C;">&lt;RmtInf&gt;<span class="code-value">INV-2024-0456</span>&lt;/&gt;</div>
+        <br/>
+        <div class="code-comment" style="color:#6ee7b7;">Rich XML · 2,000+ data fields</div>
+        <div class="code-comment" style="color:#6ee7b7;">Structured &amp; machine-readable</div>
+        <div class="code-comment" style="color:#6ee7b7;">Full Unicode support</div>
+        <div class="code-comment" style="color:#6ee7b7;">LEI, purpose codes, full address</div>
+      </div>
+    </div>
+
+    <!-- Benefits grid -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+      <div style="padding:10px 12px;background:rgba(5,150,105,0.08);border-radius:3px;border:1px solid rgba(5,150,105,0.2);">
+        <div style="font-size:0.62rem;color:var(--green);font-weight:600;margin-bottom:4px;">🔍 Faster Investigations</div>
+        <div style="font-size:0.68rem;color:var(--slate);line-height:1.4;">Full chain transparency accelerates query resolution from days to hours</div>
+      </div>
+      <div style="padding:10px 12px;background:rgba(201,168,76,0.06);border-radius:3px;border:1px solid rgba(201,168,76,0.15);">
+        <div style="font-size:0.62rem;color:var(--gold);font-weight:600;margin-bottom:4px;">🛡 Better Compliance</div>
+        <div style="font-size:0.68rem;color:var(--slate);line-height:1.4;">Structured LEI &amp; purpose codes improve AML screening accuracy</div>
+      </div>
+      <div style="padding:10px 12px;background:rgba(15,98,146,0.08);border-radius:3px;border:1px solid rgba(15,98,146,0.15);">
+        <div style="font-size:0.62rem;color:var(--teal);font-weight:600;margin-bottom:4px;">🔄 Auto-Reconciliation</div>
+        <div style="font-size:0.68rem;color:var(--slate);line-height:1.4;">Structured references allow automated matching of payments to invoices</div>
+      </div>
+      <div style="padding:10px 12px;background:rgba(124,58,237,0.06);border-radius:3px;border:1px solid rgba(124,58,237,0.15);">
+        <div style="font-size:0.62rem;color:#a78bfa;font-weight:600;margin-bottom:4px;">🤖 AI-Ready</div>
+        <div style="font-size:0.68rem;color:var(--slate);line-height:1.4;">Consistent structured data enables ML models for fraud and analytics</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">15 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 16 — SESSION 03 SUMMARY
+══════════════════════════════════════════════════════════ -->
+<div class="slide" style="background:linear-gradient(135deg,#050e1c 0%,#0d2244 50%,#050e1c 100%);" data-section="Session 03 · SWIFT & ISO 20022">
+  <div class="slide-header dark" style="background:rgba(5,14,28,0.9);"><div class="gold-bar"></div>
+    <div class="slide-title dark" style="padding-left:14px;">Session 03 · Key Takeaways</div>
+    <div class="slide-subtitle" style="padding-left:14px;">SWIFT &amp; ISO 20022 — what we covered</div>
+  </div>
+  <div class="slide-body" style="padding-top:16px;display:flex;flex-direction:column;gap:10px;">
+    <div class="summary-item"><div class="summary-num">1</div><div><div class="summary-title">SWIFT is a Messaging Network</div><div class="summary-body">Not a settlement system. SWIFT sends the instruction — central bank RTGS systems (Fedwire, TARGET2, CHAPS) settle the actual funds.</div></div></div>
+    <div class="summary-item"><div class="summary-num">2</div><div><div class="summary-title">MT103 Field Mastery</div><div class="summary-body">Fields :20:, :32A:, :50K:, :57A:, :59:, :70:, :71A: — every payments professional must know these. Field :71A: is the most disputed.</div></div></div>
+    <div class="summary-item"><div class="summary-num">3</div><div><div class="summary-title">ISO 20022 is the Future — Now</div><div class="summary-body">Richer XML data, 2,000+ fields vs MT's ~200. SWIFT cross-border migration is active. SEPA &amp; Fedwire already use it. Act on readiness now.</div></div></div>
+    <div class="summary-item"><div class="summary-num">4</div><div><div class="summary-title">Richer Data = Smarter Operations</div><div class="summary-body">ISO 20022 enables better fraud detection, faster investigations, automated reconciliation — and feeds AI/ML systems with consistent structured data.</div></div></div>
+    <div style="margin-top:4px;padding:12px 18px;background:rgba(201,168,76,0.08);border-radius:3px;border:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-size:0.72rem;color:var(--gold);font-weight:500;">Quick Check: Decode BARCGB22XXX · Name field :71A: values · What does pacs.008 replace?</div>
+      <div style="font-size:0.62rem;color:var(--muted);">Up next → Session 04: Exception Handling &amp; Operations</div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">16 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 17 — SESSION 04 DIVIDER
+══════════════════════════════════════════════════════════ -->
+<div class="slide" style="background:radial-gradient(ellipse at 30% 50%,#2d0a0a 0%,#050e1c 70%);" data-section="Session 04 · Exception Handling">
+  <div class="session-divider">
+    <div class="left-panel">
+      <div class="gold-bar" style="position:absolute;left:0;top:60px;bottom:60px;width:3px;background:linear-gradient(180deg,#f87171,#DC2626);border-radius:2px;"></div>
+      <div style="padding-left:22px;">
+        <div class="session-number" style="color:#fca5a5;">SESSION · 04 / 05</div>
+        <div class="session-name" style="color:var(--white);">Exception<br/>Handling<br/>&amp; Operations</div>
+        <div class="session-tagline" style="color:rgba(252,165,165,0.7);">What to do when payments go wrong — systematic investigation, repair, and the operational disciplines that prevent recurrence.</div>
+      </div>
+    </div>
+    <div class="right-panel" style="border-left-color:rgba(220,38,38,0.15);">
+      <div style="font-size:0.62rem;color:#fca5a5;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:18px;">In This Session</div>
+      <ul class="session-topics">
+        <li><div><strong>Types of Exceptions</strong>Formatting, sanctions, duplicates, rejections, network failures</div></li>
+        <li><div><strong>Exception Workflow</strong>Fail → Capture → Investigate → Decision → Repair → Confirm</div></li>
+        <li><div><strong>SWIFT gpi &amp; UETR</strong>End-to-end tracking and the payment tracker</div></li>
+        <li><div><strong>Reconciliation Process</strong>MT940/camt.053, matching, aged items, SLA management</div></li>
+        <li><div><strong>SLAs &amp; Escalation</strong>What good looks like in exceptions management</div></li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">17 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 18 — EXCEPTION TYPES TABLE
+══════════════════════════════════════════════════════════ -->
+<div class="slide slide-bg-light" data-section="Session 04 · Exception Handling">
+  <div class="slide-header light"><div class="gold-bar" style="background:linear-gradient(180deg,#DC2626,#991B1B);"></div>
+    <div class="slide-title light" style="padding-left:14px;">Types of Payment Exceptions</div>
+    <div class="slide-subtitle" style="padding-left:14px;">The most common failure modes — and how each is resolved</div>
+  </div>
+  <div class="slide-body" style="padding-top:14px;display:flex;flex-direction:column;gap:8px;">
+    <div style="display:grid;grid-template-columns:1.4fr 2fr 1fr 0.8fr 1.4fr;gap:0;background:var(--navy);border-radius:3px;padding:8px 14px;align-items:center;">
+      <div style="font-size:0.6rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;font-weight:600;">Exception Type</div>
+      <div style="font-size:0.6rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;font-weight:600;">Trigger</div>
+      <div style="font-size:0.6rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;font-weight:600;">Stage</div>
+      <div style="font-size:0.6rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;font-weight:600;">Severity</div>
+      <div style="font-size:0.6rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;font-weight:600;">Resolution Path</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.4fr 2fr 1fr 0.8fr 1.4fr;gap:0;background:var(--white);border-radius:3px;padding:9px 14px;align-items:center;border:1px solid var(--grid);">
+      <div style="font-size:0.78rem;font-weight:600;color:var(--navy);">Formatting Error</div>
+      <div style="font-size:0.72rem;color:var(--muted);">Missing mandatory field (e.g. IBAN, BIC, sort code)</div>
+      <div style="font-size:0.7rem;color:var(--teal);">Validation</div>
+      <div><span class="tag tag-teal">Low</span></div>
+      <div style="font-size:0.7rem;color:var(--slate);">Repair &amp; resubmit</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.4fr 2fr 1fr 0.8fr 1.4fr;gap:0;background:rgba(220,38,38,0.04);border-radius:3px;padding:9px 14px;align-items:center;border:1px solid rgba(220,38,38,0.1);">
+      <div style="font-size:0.78rem;font-weight:600;color:var(--red);">Sanctions Hit</div>
+      <div style="font-size:0.72rem;color:var(--muted);">Beneficiary/country matches sanctions or PEP list</div>
+      <div style="font-size:0.7rem;color:var(--red);">Screening</div>
+      <div><span class="tag tag-red">Critical</span></div>
+      <div style="font-size:0.7rem;color:var(--slate);">Compliance review; escalate immediately</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.4fr 2fr 1fr 0.8fr 1.4fr;gap:0;background:var(--white);border-radius:3px;padding:9px 14px;align-items:center;border:1px solid var(--grid);">
+      <div style="font-size:0.78rem;font-weight:600;color:var(--navy);">Duplicate Payment</div>
+      <div style="font-size:0.72rem;color:var(--muted);">Same reference, amount &amp; account submitted twice</div>
+      <div style="font-size:0.7rem;color:var(--teal);">Validation</div>
+      <div><span class="tag" style="background:rgba(201,168,76,0.15);color:var(--gold);">Medium</span></div>
+      <div style="font-size:0.7rem;color:var(--slate);">Cancel duplicate; investigate origin</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.4fr 2fr 1fr 0.8fr 1.4fr;gap:0;background:rgba(220,38,38,0.04);border-radius:3px;padding:9px 14px;align-items:center;border:1px solid rgba(220,38,38,0.1);">
+      <div style="font-size:0.78rem;font-weight:600;color:var(--red);">Insufficient Funds</div>
+      <div style="font-size:0.72rem;color:var(--muted);">Nostro account underfunded for settlement obligation</div>
+      <div style="font-size:0.7rem;color:var(--red);">Settlement</div>
+      <div><span class="tag tag-red">High</span></div>
+      <div style="font-size:0.7rem;color:var(--slate);">Fund Nostro urgently; retry</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.4fr 2fr 1fr 0.8fr 1.4fr;gap:0;background:var(--white);border-radius:3px;padding:9px 14px;align-items:center;border:1px solid var(--grid);">
+      <div style="font-size:0.78rem;font-weight:600;color:var(--navy);">Beneficiary Reject</div>
+      <div style="font-size:0.72rem;color:var(--muted);">Receiving bank rejects — closed account, bad details</div>
+      <div style="font-size:0.7rem;color:var(--teal);">Post-Settlement</div>
+      <div><span class="tag" style="background:rgba(201,168,76,0.15);color:var(--gold);">Medium</span></div>
+      <div style="font-size:0.7rem;color:var(--slate);">Investigate, reroute or return funds</div>
+    </div>
+    <div style="margin-top:4px;padding:10px 18px;background:rgba(201,168,76,0.05);border-radius:3px;border-left:2px solid var(--gold);font-size:0.7rem;color:var(--slate);font-style:italic;">
+      💡 <strong>Trainer:</strong> Sanctions hits generate the most anxiety — reassure participants: most are false positives caught at screening, not actual violations. The process exists to protect everyone. Emphasise: document every step for audit trail.
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">18 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 19 — EXCEPTION WORKFLOW
+══════════════════════════════════════════════════════════ -->
+<div class="slide slide-bg-navy" data-section="Session 04 · Exception Handling">
+  <div class="slide-header dark"><div class="gold-bar" style="background:linear-gradient(180deg,#DC2626,#991B1B);"></div>
+    <div class="slide-title dark" style="padding-left:14px;">Exception Handling Workflow</div>
+    <div class="slide-subtitle" style="padding-left:14px;">From failed payment to resolution — the six-stage operational process</div>
+  </div>
+  <div class="slide-body" style="padding-top:16px;display:flex;flex-direction:column;gap:14px;">
+    <!-- Workflow steps -->
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;">
+      <div style="background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.3);border-radius:3px;padding:14px 8px;text-align:center;">
+        <div style="font-size:1.4rem;margin-bottom:8px;">❌</div>
+        <div style="font-size:0.7rem;font-weight:600;color:#f87171;margin-bottom:5px;">Payment Fails</div>
+        <div style="font-size:0.6rem;color:rgba(255,255,255,0.5);line-height:1.35;">System flags exception · Alert generated</div>
+      </div>
+      <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:3px;padding:14px 8px;text-align:center;">
+        <div style="font-size:1.4rem;margin-bottom:8px;">🔔</div>
+        <div style="font-size:0.7rem;font-weight:600;color:var(--gold);margin-bottom:5px;">Capture</div>
+        <div style="font-size:0.6rem;color:rgba(255,255,255,0.5);line-height:1.35;">Logged in exceptions system · SLA timer starts</div>
+      </div>
+      <div style="background:rgba(15,98,146,0.15);border:1px solid rgba(15,98,146,0.3);border-radius:3px;padding:14px 8px;text-align:center;">
+        <div style="font-size:1.4rem;margin-bottom:8px;">🔍</div>
+        <div style="font-size:0.7rem;font-weight:600;color:var(--sky);margin-bottom:5px;">Investigate</div>
+        <div style="font-size:0.6rem;color:rgba(255,255,255,0.5);line-height:1.35;">Root cause identified · Correspondent contacted</div>
+      </div>
+      <div style="background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.25);border-radius:3px;padding:14px 8px;text-align:center;">
+        <div style="font-size:1.4rem;margin-bottom:8px;">⚖</div>
+        <div style="font-size:0.7rem;font-weight:600;color:#c4b5fd;margin-bottom:5px;">Decision</div>
+        <div style="font-size:0.6rem;color:rgba(255,255,255,0.5);line-height:1.35;">Repair / Return / Escalate / Cancel</div>
+      </div>
+      <div style="background:rgba(5,150,105,0.08);border:1px solid rgba(5,150,105,0.2);border-radius:3px;padding:14px 8px;text-align:center;">
+        <div style="font-size:1.4rem;margin-bottom:8px;">🔧</div>
+        <div style="font-size:0.7rem;font-weight:600;color:#6ee7b7;margin-bottom:5px;">Repair &amp; Release</div>
+        <div style="font-size:0.6rem;color:rgba(255,255,255,0.5);line-height:1.35;">Fix applied · Resubmitted to network</div>
+      </div>
+      <div style="background:rgba(5,150,105,0.12);border:1px solid rgba(5,150,105,0.3);border-radius:3px;padding:14px 8px;text-align:center;">
+        <div style="font-size:1.4rem;margin-bottom:8px;">✅</div>
+        <div style="font-size:0.7rem;font-weight:600;color:var(--green);margin-bottom:5px;">Confirmed</div>
+        <div style="font-size:0.6rem;color:rgba(255,255,255,0.5);line-height:1.35;">Confirmation received · Client notified</div>
+      </div>
+    </div>
+
+    <!-- SLAs -->
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.12);border-radius:3px;padding:14px 20px;">
+      <div style="font-size:0.62rem;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;">SLA Targets — What Good Looks Like</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+        <div style="text-align:center;"><div style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--gold);">&lt;2 hrs</div><div style="font-size:0.62rem;color:var(--muted);">Investigation start</div></div>
+        <div style="text-align:center;"><div style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--gold);">&lt;4 hrs</div><div style="font-size:0.62rem;color:var(--muted);">Client notification</div></div>
+        <div style="text-align:center;"><div style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--gold);">Same day</div><div style="font-size:0.62rem;color:var(--muted);">Repair &amp; release</div></div>
+        <div style="text-align:center;"><div style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--gold);">&lt;24 hrs</div><div style="font-size:0.62rem;color:var(--muted);">Return processing</div></div>
+      </div>
+    </div>
+
+    <div style="padding:10px 18px;background:rgba(220,38,38,0.06);border-radius:3px;border-left:2px solid var(--red);font-size:0.7rem;color:rgba(255,255,255,0.75);font-style:italic;">
+      💡 <strong style="color:#f87171;">Live exercise:</strong> "You receive a rejection: 'Beneficiary account closed.' Walk me through each step of this workflow with your own words." 5 minutes pairs, then debrief. Emphasise: documentation at every step is non-negotiable.
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">19 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 20 — RECONCILIATION DASHBOARD
+══════════════════════════════════════════════════════════ -->
+<div class="slide slide-bg-light" data-section="Session 04 · Exception Handling">
+  <div class="slide-header light"><div class="gold-bar" style="background:linear-gradient(180deg,#DC2626,#991B1B);"></div>
+    <div class="slide-title light" style="padding-left:14px;">Reconciliation — Closing the Loop</div>
+    <div class="slide-subtitle" style="padding-left:14px;">Daily dashboard view — ensuring every payment is accounted for</div>
+  </div>
+  <div class="slide-body" style="padding-top:14px;display:flex;flex-direction:column;gap:10px;">
+    <!-- KPI row -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+      <div style="background:var(--navy);border-radius:4px;padding:16px 18px;border-top:3px solid var(--gold);">
+        <div style="font-family:var(--font-display);font-size:2rem;font-weight:700;color:var(--white);">12,847</div>
+        <div style="font-size:0.7rem;color:var(--sky);margin-top:4px;">Payments Processed</div>
+        <div style="font-size:0.6rem;color:var(--muted);margin-top:3px;font-style:italic;">Today</div>
+      </div>
+      <div style="background:rgba(5,150,105,0.08);border-radius:4px;padding:16px 18px;border-top:3px solid var(--green);">
+        <div style="font-family:var(--font-display);font-size:2rem;font-weight:700;color:var(--green);">12,719</div>
+        <div style="font-size:0.7rem;color:var(--slate);margin-top:4px;">Auto-Matched</div>
+        <div style="font-size:0.6rem;color:var(--muted);margin-top:3px;font-style:italic;">99.0% match rate</div>
+      </div>
+      <div style="background:rgba(201,168,76,0.06);border-radius:4px;padding:16px 18px;border-top:3px solid var(--gold);">
+        <div style="font-family:var(--font-display);font-size:2rem;font-weight:700;color:var(--gold);">128</div>
+        <div style="font-size:0.7rem;color:var(--slate);margin-top:4px;">Open Exceptions</div>
+        <div style="font-size:0.6rem;color:var(--muted);margin-top:3px;font-style:italic;">Under investigation</div>
+      </div>
+      <div style="background:rgba(220,38,38,0.06);border-radius:4px;padding:16px 18px;border-top:3px solid var(--red);">
+        <div style="font-family:var(--font-display);font-size:2rem;font-weight:700;color:var(--red);">14</div>
+        <div style="font-size:0.7rem;color:var(--slate);margin-top:4px;">Aged &gt;24 Hours</div>
+        <div style="font-size:0.6rem;color:var(--red);margin-top:3px;font-style:italic;">Escalation needed</div>
+      </div>
+    </div>
+
+    <!-- Process steps + insight -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="background:var(--white);border-radius:4px;padding:16px;border:1px solid var(--grid);">
+        <div style="font-size:0.62rem;color:var(--navy);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;">Reconciliation Process</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:10px;font-size:0.75rem;"><div style="width:22px;height:22px;border-radius:50%;background:var(--navy);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:700;flex-shrink:0;">1</div><span style="color:var(--slate);">Extract bank statement (MT940 / ISO camt.053)</span></div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:0.75rem;"><div style="width:22px;height:22px;border-radius:50%;background:var(--navy);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:700;flex-shrink:0;">2</div><span style="color:var(--slate);">Match against internal ledger entries (automated)</span></div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:0.75rem;"><div style="width:22px;height:22px;border-radius:50%;background:var(--navy);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:700;flex-shrink:0;">3</div><span style="color:var(--slate);">Flag unmatched items — route to exceptions team</span></div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:0.75rem;"><div style="width:22px;height:22px;border-radius:50%;background:var(--navy);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:700;flex-shrink:0;">4</div><span style="color:var(--slate);">Post reconciled entries; escalate aged items to management</span></div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:0.75rem;"><div style="width:22px;height:22px;border-radius:50%;background:var(--green);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:700;flex-shrink:0;">✓</div><span style="color:var(--slate);">Close day with signed-off reconciliation report</span></div>
+        </div>
+      </div>
+      <div style="background:var(--white);border-radius:4px;padding:16px;border:1px solid var(--grid);">
+        <div style="font-size:0.62rem;color:var(--navy);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;">Exception Breakdown — Today</div>
+        <div style="display:flex;flex-direction:column;gap:7px;">
+          <div style="display:flex;align-items:center;gap:10px;"><div style="font-size:0.7rem;color:var(--slate);min-width:120px;">Wrong IBAN/BIC</div><div style="flex:1;background:rgba(203,213,225,0.3);border-radius:2px;height:12px;position:relative;"><div style="position:absolute;left:0;top:0;bottom:0;background:var(--red);border-radius:2px;width:30%;"></div></div><div style="font-size:0.68rem;color:var(--slate);min-width:25px;text-align:right;">38</div></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div style="font-size:0.7rem;color:var(--slate);min-width:120px;">Duplicate</div><div style="flex:1;background:rgba(203,213,225,0.3);border-radius:2px;height:12px;position:relative;"><div style="position:absolute;left:0;top:0;bottom:0;background:var(--gold);border-radius:2px;width:17%;"></div></div><div style="font-size:0.68rem;color:var(--slate);min-width:25px;text-align:right;">22</div></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div style="font-size:0.7rem;color:var(--slate);min-width:120px;">Sanction Hold</div><div style="flex:1;background:rgba(203,213,225,0.3);border-radius:2px;height:12px;position:relative;"><div style="position:absolute;left:0;top:0;bottom:0;background:var(--purple);border-radius:2px;width:15%;"></div></div><div style="font-size:0.68rem;color:var(--slate);min-width:25px;text-align:right;">19</div></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div style="font-size:0.7rem;color:var(--slate);min-width:120px;">Insuf. Funds</div><div style="flex:1;background:rgba(203,213,225,0.3);border-radius:2px;height:12px;position:relative;"><div style="position:absolute;left:0;top:0;bottom:0;background:var(--teal);border-radius:2px;width:13%;"></div></div><div style="font-size:0.68rem;color:var(--slate);min-width:25px;text-align:right;">17</div></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div style="font-size:0.7rem;color:var(--slate);min-width:120px;">Network Fail</div><div style="flex:1;background:rgba(203,213,225,0.3);border-radius:2px;height:12px;position:relative;"><div style="position:absolute;left:0;top:0;bottom:0;background:var(--muted);border-radius:2px;width:11%;"></div></div><div style="font-size:0.68rem;color:var(--slate);min-width:25px;text-align:right;">14</div></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div style="font-size:0.7rem;color:var(--slate);min-width:120px;">Other</div><div style="flex:1;background:rgba(203,213,225,0.3);border-radius:2px;height:12px;position:relative;"><div style="position:absolute;left:0;top:0;bottom:0;background:rgba(100,116,139,0.5);border-radius:2px;width:14%;"></div></div><div style="font-size:0.68rem;color:var(--slate);min-width:25px;text-align:right;">18</div></div>
+        </div>
+        <div style="margin-top:12px;font-size:0.65rem;color:var(--muted);font-style:italic;">A 99% match rate sounds great — but 1% of $1B = $10M unaccounted.</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">20 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 21 — SESSION 04 SUMMARY
+══════════════════════════════════════════════════════════ -->
+<div class="slide" style="background:radial-gradient(ellipse at 30% 50%,#2d0a0a 0%,#050e1c 70%);" data-section="Session 04 · Exception Handling">
+  <div class="slide-header dark" style="background:rgba(5,14,28,0.85);"><div class="gold-bar" style="background:linear-gradient(180deg,#f87171,#DC2626);"></div>
+    <div class="slide-title dark" style="padding-left:14px;">Session 04 · Key Takeaways</div>
+    <div class="slide-subtitle" style="padding-left:14px;">Exception Handling &amp; Operations — what we covered</div>
+  </div>
+  <div class="slide-body" style="padding-top:16px;display:flex;flex-direction:column;gap:10px;">
+    <div class="summary-item" style="border-color:rgba(220,38,38,0.2);"><div class="summary-num" style="background:var(--red);">1</div><div><div class="summary-title" style="color:#f87171;">Exceptions Are Inevitable</div><div class="summary-body">Every payment operation encounters exceptions. The differentiator is speed, accuracy, and consistency of resolution — not prevention alone.</div></div></div>
+    <div class="summary-item" style="border-color:rgba(220,38,38,0.2);"><div class="summary-num" style="background:var(--red);">2</div><div><div class="summary-title" style="color:#f87171;">The Six-Stage Workflow</div><div class="summary-body">Fail → Capture → Investigate → Decision → Repair → Confirm. Document every step. SLAs are the discipline that keeps operations accountable.</div></div></div>
+    <div class="summary-item" style="border-color:rgba(220,38,38,0.2);"><div class="summary-num" style="background:var(--red);">3</div><div><div class="summary-title" style="color:#f87171;">Reconciliation is Control</div><div class="summary-body">Daily MT940/camt.053 reconciliation ensures every transaction is accounted for. 99% auto-match rate should be the target — aged items must escalate.</div></div></div>
+    <div class="summary-item" style="border-color:rgba(220,38,38,0.2);"><div class="summary-num" style="background:var(--red);">4</div><div><div class="summary-title" style="color:#f87171;">gpi Changed Tracking</div><div class="summary-body">SWIFT gpi's UETR gives end-to-end payment visibility. Clients expect real-time status — banks that provide this reduce query volumes by 30–40%.</div></div></div>
+    <div style="margin-top:4px;padding:12px 18px;background:rgba(220,38,38,0.06);border-radius:3px;border:1px solid rgba(220,38,38,0.2);display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-size:0.72rem;color:#f87171;font-weight:500;">Quick Check: Name 3 exception types · Walk the 6-stage workflow · What is a UETR?</div>
+      <div style="font-size:0.62rem;color:var(--muted);">Up next → Session 05: Technology &amp; Future Trends</div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">21 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 22 — SESSION 05 DIVIDER
+══════════════════════════════════════════════════════════ -->
+<div class="slide" style="background:radial-gradient(ellipse at 60% 40%,#062d1a 0%,#050e1c 70%);" data-section="Session 05 · Technology & Trends">
+  <div class="session-divider">
+    <div class="left-panel">
+      <div class="gold-bar" style="position:absolute;left:0;top:60px;bottom:60px;width:3px;background:linear-gradient(180deg,#6ee7b7,#059669);border-radius:2px;"></div>
+      <div style="padding-left:22px;">
+        <div class="session-number" style="color:#6ee7b7;">SESSION · 05 / 05</div>
+        <div class="session-name">Technology<br/>&amp; Future<br/>Trends</div>
+        <div class="session-tagline" style="color:rgba(110,231,183,0.7);">The technology powering modern payments — and the forces reshaping the industry over the next three to five years.</div>
+      </div>
+    </div>
+    <div class="right-panel" style="border-left-color:rgba(5,150,105,0.15);">
+      <div style="font-size:0.62rem;color:#6ee7b7;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:18px;">In This Session</div>
+      <ul class="session-topics">
+        <li><div><strong>Payments Architecture</strong>Channels → APIs → Hub → Core → Clearing — the full stack</div></li>
+        <li><div><strong>Open Banking &amp; APIs</strong>PSD2, PSD3, VRP, embedded finance</div></li>
+        <li><div><strong>Real-Time Payments</strong>FedNow, PIX, UPI — global RTP proliferation</div></li>
+        <li><div><strong>AI in Payments</strong>Fraud, AML, reconciliation, customer service</div></li>
+        <li><div><strong>CBDCs &amp; Tokenisation</strong>The next frontier of payment settlement</div></li>
+        <li><div><strong>What to Watch</strong>Key trends and strategic implications for your organisation</div></li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">22 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 23 — PAYMENTS ARCHITECTURE
+══════════════════════════════════════════════════════════ -->
+<div class="slide slide-bg-navy" data-section="Session 05 · Technology & Trends">
+  <div class="slide-header dark"><div class="gold-bar" style="background:linear-gradient(180deg,#6ee7b7,#059669);"></div>
+    <div class="slide-title dark" style="padding-left:14px;">Modern Payments Architecture</div>
+    <div class="slide-subtitle" style="padding-left:14px;">The technology stack powering enterprise payments — channel to settlement</div>
+  </div>
+  <div class="slide-body" style="padding-top:16px;display:flex;flex-direction:column;gap:6px;">
+    <div style="padding:12px 20px;background:linear-gradient(90deg,rgba(15,98,146,0.3),rgba(15,98,146,0.15));border-radius:3px;display:flex;align-items:center;gap:14px;border-left:4px solid var(--teal);">
+      <div style="font-size:0.6rem;font-weight:700;color:var(--sky);letter-spacing:0.15em;min-width:130px;">CHANNELS</div>
+      <div style="flex:1;font-size:0.72rem;color:rgba(255,255,255,0.75);">Online Banking · Mobile App · Corporate Portal · API / Host-to-Host · SWIFT FileAct / InterAct</div>
+      <div style="font-size:0.6rem;color:var(--sky);text-align:right;min-width:80px;">Client-facing</div>
+    </div>
+    <div style="padding:12px 20px;background:linear-gradient(90deg,rgba(201,168,76,0.15),rgba(201,168,76,0.05));border-radius:3px;display:flex;align-items:center;gap:14px;border-left:4px solid var(--gold);">
+      <div style="font-size:0.6rem;font-weight:700;color:var(--gold);letter-spacing:0.15em;min-width:130px;">API GATEWAY</div>
+      <div style="flex:1;font-size:0.72rem;color:rgba(255,255,255,0.75);">REST APIs · OAuth 2.0 Authentication · Rate Limiting · Developer Portal · Open Banking (PSD2/PSD3)</div>
+      <div style="font-size:0.6rem;color:var(--gold);text-align:right;min-width:80px;">Connectivity</div>
+    </div>
+    <div style="padding:12px 20px;background:linear-gradient(90deg,rgba(11,30,61,0.8),rgba(21,45,86,0.5));border-radius:3px;display:flex;align-items:center;gap:14px;border-left:4px solid var(--gold);border:1px solid rgba(201,168,76,0.2);">
+      <div style="font-size:0.6rem;font-weight:700;color:var(--gold);letter-spacing:0.15em;min-width:130px;">PAYMENT HUB ⭐</div>
+      <div style="flex:1;font-size:0.72rem;color:rgba(255,255,255,0.85);font-weight:500;">Routing Engine · Format Conversion (MT↔MX) · Orchestration · Workflow Rules · Duplicate Detection</div>
+      <div style="font-size:0.6rem;color:var(--gold);text-align:right;min-width:80px;">The Brain</div>
+    </div>
+    <div style="padding:12px 20px;background:linear-gradient(90deg,rgba(5,150,105,0.12),rgba(5,150,105,0.05));border-radius:3px;display:flex;align-items:center;gap:14px;border-left:4px solid var(--green);">
+      <div style="font-size:0.6rem;font-weight:700;color:#6ee7b7;letter-spacing:0.15em;min-width:130px;">CORE BANKING</div>
+      <div style="flex:1;font-size:0.72rem;color:rgba(255,255,255,0.75);">Account Ledger · Balance Management · GL Posting · Customer Data · Position Keeping</div>
+      <div style="font-size:0.6rem;color:#6ee7b7;text-align:right;min-width:80px;">Record of truth</div>
+    </div>
+    <div style="padding:12px 20px;background:linear-gradient(90deg,rgba(124,58,237,0.15),rgba(124,58,237,0.05));border-radius:3px;display:flex;align-items:center;gap:14px;border-left:4px solid var(--purple);">
+      <div style="font-size:0.6rem;font-weight:700;color:#c4b5fd;letter-spacing:0.15em;min-width:130px;">SCREENING</div>
+      <div style="flex:1;font-size:0.72rem;color:rgba(255,255,255,0.75);">Sanctions Screening · AML / Transaction Monitoring · Fraud Detection · PEP &amp; Adverse Media checks</div>
+      <div style="font-size:0.6rem;color:#c4b5fd;text-align:right;min-width:80px;">Risk &amp; Compliance</div>
+    </div>
+    <div style="padding:12px 20px;background:linear-gradient(90deg,rgba(146,64,14,0.2),rgba(146,64,14,0.08));border-radius:3px;display:flex;align-items:center;gap:14px;border-left:4px solid #F59E0B;">
+      <div style="font-size:0.6rem;font-weight:700;color:#FCD34D;letter-spacing:0.15em;min-width:130px;">CLEARING &amp; SETTLEMENT</div>
+      <div style="flex:1;font-size:0.72rem;color:rgba(255,255,255,0.75);">SWIFT Network · ACH / RTP Rails · RTGS (Fedwire / TARGET2 / CHAPS) · FX Engine · Nostro Management</div>
+      <div style="font-size:0.6rem;color:#FCD34D;text-align:right;min-width:80px;">Final settlement</div>
+    </div>
+    <div style="margin-top:4px;padding:8px 18px;background:rgba(201,168,76,0.05);border-radius:3px;border-left:2px solid var(--gold);font-size:0.68rem;color:rgba(255,255,255,0.65);font-style:italic;">
+      ⭐ <strong style="color:var(--gold);">The Payment Hub</strong> is the brain — routing decisions, format conversion, and workflow rules all live here. Vendors: Finastra, Temenos, FIS, Bottomline, Volante.
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">23 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 24 — FUTURE TRENDS
+══════════════════════════════════════════════════════════ -->
+<div class="slide slide-bg-light" data-section="Session 05 · Technology & Trends">
+  <div class="slide-header light"><div class="gold-bar" style="background:linear-gradient(180deg,#6ee7b7,#059669);"></div>
+    <div class="slide-title light" style="padding-left:14px;">Future of Payments — Six Key Trends</div>
+    <div class="slide-subtitle" style="padding-left:14px;">Forces reshaping the industry over the next three to five years</div>
+  </div>
+  <div class="slide-body" style="padding-top:14px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;height:calc(100% - 60px);">
+      <div style="background:var(--white);border-radius:4px;padding:16px;border:1px solid var(--grid);border-top:3px solid var(--gold);display:flex;flex-direction:column;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;"><div style="font-size:1.2rem;">⚡</div><span class="tag tag-gold">NOW</span></div>
+        <div style="font-size:0.82rem;font-weight:600;color:var(--navy);margin-bottom:6px;">Real-Time Payments Everywhere</div>
+        <div style="font-size:0.7rem;color:var(--slate);line-height:1.5;flex:1;">FedNow (US, 2023), PIX (Brazil), UPI (India), FAST (Singapore). 24/7 instant settlement is becoming the global baseline. Batch processing is declining for many use cases.</div>
+      </div>
+      <div style="background:var(--white);border-radius:4px;padding:16px;border:1px solid var(--grid);border-top:3px solid var(--teal);display:flex;flex-direction:column;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;"><div style="font-size:1.2rem;">🔗</div><span class="tag tag-teal">2025–26</span></div>
+        <div style="font-size:0.82rem;font-weight:600;color:var(--navy);margin-bottom:6px;">Open Banking 2.0</div>
+        <div style="font-size:0.7rem;color:var(--slate);line-height:1.5;flex:1;">Moving from read-only data access to active payment initiation. Variable Recurring Payments (VRP) and embedded finance are transforming how businesses pay and collect.</div>
+      </div>
+      <div style="background:var(--white);border-radius:4px;padding:16px;border:1px solid var(--grid);border-top:3px solid var(--green);display:flex;flex-direction:column;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;"><div style="font-size:1.2rem;">☁</div><span class="tag tag-green">ONGOING</span></div>
+        <div style="font-size:0.82rem;font-weight:600;color:var(--navy);margin-bottom:6px;">Cloud-Native Core Banking</div>
+        <div style="font-size:0.7rem;color:var(--slate);line-height:1.5;flex:1;">Banks migrating from monolithic legacy systems to cloud-native microservices. Enables faster product launches, elastic scaling, and dramatically improved resilience.</div>
+      </div>
+      <div style="background:var(--white);border-radius:4px;padding:16px;border:1px solid var(--grid);border-top:3px solid var(--gold);display:flex;flex-direction:column;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;"><div style="font-size:1.2rem;">🤖</div><span class="tag tag-gold">NOW</span></div>
+        <div style="font-size:0.82rem;font-weight:600;color:var(--navy);margin-bottom:6px;">AI &amp; ML in Payments</div>
+        <div style="font-size:0.7rem;color:var(--slate);line-height:1.5;flex:1;">Fraud detection, AML screening, exception handling, reconciliation — all being transformed by ML. AI augments human judgment; it does not replace expertise.</div>
+      </div>
+      <div style="background:var(--white);border-radius:4px;padding:16px;border:1px solid var(--grid);border-top:3px solid var(--navy);display:flex;flex-direction:column;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;"><div style="font-size:1.2rem;">📋</div><span class="tag" style="background:rgba(11,30,61,0.08);color:var(--navy);">2025–26</span></div>
+        <div style="font-size:0.82rem;font-weight:600;color:var(--navy);margin-bottom:6px;">ISO 20022 Ubiquity</div>
+        <div style="font-size:0.7rem;color:var(--slate);line-height:1.5;flex:1;">Full SWIFT migration + Fedwire + CHAPS + SEPA. 2,000+ structured fields enable new services: smart routing, purpose-coded payments, automated reconciliation.</div>
+      </div>
+      <div style="background:var(--white);border-radius:4px;padding:16px;border:1px solid var(--grid);border-top:3px solid var(--purple);display:flex;flex-direction:column;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;"><div style="font-size:1.2rem;">💎</div><span class="tag" style="background:rgba(124,58,237,0.1);color:#7C3AED;">2026+</span></div>
+        <div style="font-size:0.82rem;font-weight:600;color:var(--navy);margin-bottom:6px;">CBDCs &amp; Tokenised Money</div>
+        <div style="font-size:0.7rem;color:var(--slate);line-height:1.5;flex:1;">Central Bank Digital Currencies and tokenised deposits moving from pilot to reality. Could reshape interbank settlement and cross-border payments at the foundation level.</div>
+      </div>
+    </div>
+    <div style="margin-top:8px;padding:8px 18px;background:rgba(201,168,76,0.05);border-radius:3px;border-left:2px solid var(--gold);font-size:0.68rem;color:var(--slate);font-style:italic;">
+      💡 <strong>Trainer:</strong> "Which of these trends most directly impacts your role in the next 2 years?" — great discussion starter. AI in payments is the hottest topic. Acknowledge the opportunity AND the need for human oversight.
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">24 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 25 — SESSION 05 SUMMARY
+══════════════════════════════════════════════════════════ -->
+<div class="slide" style="background:radial-gradient(ellipse at 60% 40%,#062d1a 0%,#050e1c 70%);" data-section="Session 05 · Technology & Trends">
+  <div class="slide-header dark" style="background:rgba(5,14,28,0.85);"><div class="gold-bar" style="background:linear-gradient(180deg,#6ee7b7,#059669);"></div>
+    <div class="slide-title dark" style="padding-left:14px;">Session 05 · Key Takeaways</div>
+    <div class="slide-subtitle" style="padding-left:14px;">Technology &amp; Future Trends — what we covered</div>
+  </div>
+  <div class="slide-body" style="padding-top:16px;display:flex;flex-direction:column;gap:10px;">
+    <div class="summary-item" style="border-color:rgba(5,150,105,0.2);"><div class="summary-num" style="background:var(--green);">1</div><div><div class="summary-title" style="color:#6ee7b7;">Layered Architecture</div><div class="summary-body">Channels → APIs → Payment Hub → Core Banking → Screening → Clearing. Understanding the stack helps you diagnose problems and design better solutions.</div></div></div>
+    <div class="summary-item" style="border-color:rgba(5,150,105,0.2);"><div class="summary-num" style="background:var(--green);">2</div><div><div class="summary-title" style="color:#6ee7b7;">Open Banking is Already Here</div><div class="summary-body">PSD2 mandates mean your clients can already share data and initiate payments via third-party apps. Embrace it strategically or face disruption.</div></div></div>
+    <div class="summary-item" style="border-color:rgba(5,150,105,0.2);"><div class="summary-num" style="background:var(--green);">3</div><div><div class="summary-title" style="color:#6ee7b7;">Real-Time is the New Normal</div><div class="summary-body">RTP, FedNow, PIX, UPI — instant payment networks are proliferating globally. 24/7 availability with immediate finality is the client expectation.</div></div></div>
+    <div class="summary-item" style="border-color:rgba(5,150,105,0.2);"><div class="summary-num" style="background:var(--green);">4</div><div><div class="summary-title" style="color:#6ee7b7;">AI + ISO 20022 = Smarter Payments</div><div class="summary-body">Richer structured data fuels better fraud detection, faster reconciliation, and smarter operations. The two trends amplify each other significantly.</div></div></div>
+    <div style="margin-top:4px;padding:12px 18px;background:rgba(5,150,105,0.06);border-radius:3px;border:1px solid rgba(5,150,105,0.2);display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-size:0.72rem;color:#6ee7b7;font-weight:500;">Final question: Which one trend will you investigate when you're back at your desk?</div>
+      <div style="font-size:0.62rem;color:var(--muted);">Up next → Programme Quiz &amp; Recap</div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">25 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 26 — QUIZ QUESTIONS
+══════════════════════════════════════════════════════════ -->
+<div class="slide slide-bg-session" data-section="Knowledge Check">
+  <div class="slide-header dark" style="background:rgba(7,20,40,0.9);"><div class="gold-bar"></div>
+    <div class="slide-title dark" style="padding-left:14px;">Knowledge Check — 5 Questions</div>
+    <div class="slide-subtitle" style="padding-left:14px;">Test your understanding before we close — try without notes first</div>
+  </div>
+  <div class="slide-body" style="padding-top:16px;display:flex;flex-direction:column;gap:9px;">
+    <div class="quiz-q">
+      <div class="quiz-num">QUESTION 01</div>
+      <div class="quiz-text">What is the key difference between Retail Banking and Wholesale Banking in terms of clients, products, and payment types?</div>
+      <div class="quiz-hint">Think: who is the customer? What scale? What payment instrument?</div>
+    </div>
+    <div class="quiz-q">
+      <div class="quiz-num">QUESTION 02</div>
+      <div class="quiz-text">Name all 7 stages of the Payment Lifecycle in the correct order.</div>
+      <div class="quiz-hint">Starts with Initiation, ends with Reconciliation — 5 stages in between</div>
+    </div>
+    <div class="quiz-q">
+      <div class="quiz-num">QUESTION 03</div>
+      <div class="quiz-text">What does field :71A: in an MT103 SWIFT message represent? What are the three valid values and what do they mean?</div>
+      <div class="quiz-hint">OUR / SHA / BEN — who bears the banking charges?</div>
+    </div>
+    <div class="quiz-q">
+      <div class="quiz-num">QUESTION 04</div>
+      <div class="quiz-text">Why is ISO 20022 considered a significant improvement over legacy MT formats — beyond just being a new standard?</div>
+      <div class="quiz-hint">Think: data richness, compliance, automation, AI-readiness</div>
+    </div>
+    <div class="quiz-q">
+      <div class="quiz-num">QUESTION 05</div>
+      <div class="quiz-text">Name three key technology trends shaping the future of payments and explain the business impact of each.</div>
+      <div class="quiz-hint">RTP, Open Banking, Cloud, AI, ISO 20022, CBDCs — choose any three</div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">26 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 27 — QUIZ ANSWERS
+══════════════════════════════════════════════════════════ -->
+<div class="slide slide-bg-navy" data-section="Knowledge Check">
+  <div class="slide-header dark"><div class="gold-bar"></div>
+    <div class="slide-title dark" style="padding-left:14px;">Knowledge Check — Model Answers</div>
+    <div class="slide-subtitle" style="padding-left:14px;">Review and reinforce — celebrate what participants got right</div>
+  </div>
+  <div class="slide-body" style="padding-top:14px;display:flex;flex-direction:column;gap:8px;">
+    <div class="answer-row" style="border-left-color:var(--gold);">
+      <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gold);min-width:20px;padding-top:2px;">A1</div>
+      <div style="font-size:0.72rem;color:rgba(255,255,255,0.85);line-height:1.5;"><strong style="color:var(--gold);">Retail</strong> = individual customers (accounts, cards, mortgages, P2P). Small amounts, high volume. <strong style="color:var(--gold);">Wholesale</strong> = corporates &amp; institutions (cash mgmt, trade finance, FX). Large values, wire transfers, SWIFT, RTGS systems.</div>
+    </div>
+    <div class="answer-row" style="border-left-color:var(--teal);">
+      <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--sky);min-width:20px;padding-top:2px;">A2</div>
+      <div style="font-size:0.72rem;color:rgba(255,255,255,0.85);line-height:1.5;"><strong style="color:var(--sky);">Initiation → Validation → Enrichment → Routing → Clearing → Settlement → Reconciliation</strong> — in that exact order. Exceptions can occur at any stage but are most common at Validation and Clearing.</div>
+    </div>
+    <div class="answer-row" style="border-left-color:var(--gold);">
+      <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gold);min-width:20px;padding-top:2px;">A3</div>
+      <div style="font-size:0.72rem;color:rgba(255,255,255,0.85);line-height:1.5;">:71A: = Charge Bearer. <strong style="color:var(--gold);">OUR</strong> = ordering customer pays all fees. <strong style="color:var(--gold);">SHA</strong> = charges shared — sender pays outgoing, beneficiary pays incoming (most common). <strong style="color:var(--gold);">BEN</strong> = beneficiary pays all charges.</div>
+    </div>
+    <div class="answer-row" style="border-left-color:var(--green);">
+      <div style="font-family:var(--font-mono);font-size:0.6rem;color:#6ee7b7;min-width:20px;padding-top:2px;">A4</div>
+      <div style="font-size:0.72rem;color:rgba(255,255,255,0.85);line-height:1.5;">ISO 20022 provides <strong style="color:#6ee7b7;">2,000+ structured fields</strong> vs MT's ~200. Enables: richer remittance data, full party details without truncation, structured LEI/purpose codes for compliance, machine-readable XML for AI/ML, and global standard harmonisation across SWIFT/SEPA/Fedwire.</div>
+    </div>
+    <div class="answer-row" style="border-left-color:var(--purple);">
+      <div style="font-family:var(--font-mono);font-size:0.6rem;color:#c4b5fd;min-width:20px;padding-top:2px;">A5</div>
+      <div style="font-size:0.72rem;color:rgba(255,255,255,0.85);line-height:1.5;">Any 3 from: <strong style="color:#c4b5fd;">RTP</strong> (instant settlement, 24/7 liquidity impact) · <strong style="color:#c4b5fd;">Open Banking</strong> (new competitors, embedded finance) · <strong style="color:#c4b5fd;">AI/ML</strong> (better fraud detection, automation) · <strong style="color:#c4b5fd;">ISO 20022</strong> (richer data, smarter operations) · <strong style="color:#c4b5fd;">Cloud</strong> (agility, lower cost) · <strong style="color:#c4b5fd;">CBDCs</strong> (future settlement rails).</div>
+    </div>
+    <div style="padding:8px 18px;background:rgba(201,168,76,0.06);border-radius:3px;border-left:2px solid var(--gold);font-size:0.68rem;color:rgba(255,255,255,0.65);font-style:italic;">
+      💡 <strong style="color:var(--gold);">Trainer:</strong> Reveal answers one by one. Praise correct answers. Clarify misconceptions constructively — the quiz builds confidence, not anxiety. Use wrong answers as coaching opportunities.
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">27 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 28 — FINAL PROGRAMME RECAP
+══════════════════════════════════════════════════════════ -->
+<div class="slide slide-bg-light" data-section="Programme Recap">
+  <div class="slide-header light"><div class="gold-bar"></div>
+    <div class="slide-title light" style="padding-left:14px;">Programme Recap</div>
+    <div class="slide-subtitle" style="padding-left:14px;">Five sessions · Your complete map of the corporate payments landscape</div>
+  </div>
+  <div class="slide-body" style="padding-top:14px;display:flex;flex-direction:column;gap:8px;">
+    <div style="display:flex;gap:12px;align-items:center;padding:12px 18px;background:var(--white);border-radius:3px;border:1px solid var(--grid);">
+      <div style="width:38px;height:38px;border-radius:3px;background:var(--navy);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:0.7rem;color:var(--gold);font-weight:700;flex-shrink:0;">01</div>
+      <div style="flex:1;"><div style="font-size:0.82rem;font-weight:600;color:var(--navy);">Banking Landscape</div><div style="font-size:0.7rem;color:var(--muted);">Retail vs Wholesale vs Investment · Participants · Regulatory framework · Essential terminology</div></div>
+      <div style="font-size:0.6rem;color:var(--muted);text-align:right;min-width:80px;">Foundation</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;padding:12px 18px;background:var(--white);border-radius:3px;border:1px solid var(--grid);">
+      <div style="width:38px;height:38px;border-radius:3px;background:var(--teal);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:0.7rem;color:var(--white);font-weight:700;flex-shrink:0;">02</div>
+      <div style="flex:1;"><div style="font-size:0.82rem;font-weight:600;color:var(--navy);">Payment Methods &amp; Lifecycle</div><div style="font-size:0.7rem;color:var(--muted);">Wire · ACH · RTP comparison · 7-Stage lifecycle flowchart · Cross-border correspondent routing</div></div>
+      <div style="font-size:0.6rem;color:var(--muted);text-align:right;min-width:80px;">Core Rails</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;padding:12px 18px;background:var(--white);border-radius:3px;border:1px solid var(--grid);">
+      <div style="width:38px;height:38px;border-radius:3px;background:linear-gradient(135deg,var(--navy),var(--navy-mid));display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:0.7rem;color:var(--gold);font-weight:700;flex-shrink:0;">03</div>
+      <div style="flex:1;"><div style="font-size:0.82rem;font-weight:600;color:var(--navy);">SWIFT &amp; ISO 20022</div><div style="font-size:0.7rem;color:var(--muted);">SWIFT network · MT103 field anatomy · BIC codes · ISO 20022 migration and benefits</div></div>
+      <div style="font-size:0.6rem;color:var(--muted);text-align:right;min-width:80px;">Standards</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;padding:12px 18px;background:var(--white);border-radius:3px;border:1px solid var(--grid);">
+      <div style="width:38px;height:38px;border-radius:3px;background:var(--red);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:0.7rem;color:var(--white);font-weight:700;flex-shrink:0;">04</div>
+      <div style="flex:1;"><div style="font-size:0.82rem;font-weight:600;color:var(--navy);">Exception Handling &amp; Operations</div><div style="font-size:0.7rem;color:var(--muted);">Exception types · Investigation workflow · SWIFT gpi tracking · Reconciliation dashboard</div></div>
+      <div style="font-size:0.6rem;color:var(--muted);text-align:right;min-width:80px;">Operations</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;padding:12px 18px;background:var(--white);border-radius:3px;border:1px solid var(--grid);">
+      <div style="width:38px;height:38px;border-radius:3px;background:var(--green);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:0.7rem;color:var(--white);font-weight:700;flex-shrink:0;">05</div>
+      <div style="flex:1;"><div style="font-size:0.82rem;font-weight:600;color:var(--navy);">Technology &amp; Future Trends</div><div style="font-size:0.7rem;color:var(--muted);">Payments architecture · Open Banking · RTP proliferation · AI in payments · CBDCs</div></div>
+      <div style="font-size:0.6rem;color:var(--muted);text-align:right;min-width:80px;">Future</div>
+    </div>
+    <div style="margin-top:4px;padding:12px 20px;background:rgba(201,168,76,0.06);border-radius:3px;border:1px solid rgba(201,168,76,0.2);text-align:center;">
+      <div style="font-family:var(--font-display);font-size:1rem;color:var(--navy);font-weight:600;margin-bottom:4px;">"You now have a framework for understanding every payment that flows through your organisation."</div>
+      <div style="font-size:0.68rem;color:var(--muted);">Apply one thing this week · Share your learnings · Build on this foundation</div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">28 / 39</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 29 — THANK YOU / Q&A
+══════════════════════════════════════════════════════════ -->
+<div class="slide" style="background:radial-gradient(ellipse at 25% 50%,#0d2a50 0%,#050e1c 65%);" data-section="Thank You">
+  <div class="thankyou-slide">
+    <div class="thankyou-left">
+      <div class="gold-bar" style="position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#C9A84C,#9A7A2E);"></div>
+      <div style="padding-left:22px;">
+        <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--gold);letter-spacing:0.2em;margin-bottom:16px;">CORPORATE BANKING &amp; PAYMENTS MASTERCLASS</div>
+        <div style="font-family:var(--font-display);font-size:3.8rem;font-weight:300;color:var(--white);line-height:1;margin-bottom:8px;">Thank</div>
+        <div style="font-family:var(--font-display);font-size:3.8rem;font-weight:700;color:var(--gold);line-height:1;margin-bottom:24px;">You.</div>
+        <div style="width:60px;height:2px;background:var(--gold);margin-bottom:24px;"></div>
+        <div style="font-size:0.82rem;color:rgba(165,215,232,0.8);line-height:1.7;max-width:320px;margin-bottom:28px;">It has been a privilege to deliver this programme. The payments industry is evolving rapidly — what you've learned today is a living foundation, not a fixed destination.</div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:32px;">
+          <div style="display:flex;align-items:center;gap:12px;font-size:0.78rem;color:rgba(255,255,255,0.8);">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;"></div>
+            Apply one concept this week in your role
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:0.78rem;color:rgba(255,255,255,0.8);">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;"></div>
+            Share your learnings with your immediate team
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:0.78rem;color:rgba(255,255,255,0.8);">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;"></div>
+            Connect for follow-up questions anytime
+          </div>
+        </div>
+
+        <!-- Contact -->
+        <div style="padding:16px 20px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:3px;">
+          <div style="font-size:0.6rem;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;">Contact Your Trainer</div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <svg width="28" height="28" viewBox="0 0 64 64" fill="none">
+              <rect width="64" height="64" rx="10" fill="#0a0a0a"/>
+              <circle cx="32" cy="26" r="17" stroke="#C9A84C" stroke-width="2" fill="none"/>
+              <circle cx="32" cy="26" r="14.5" fill="#0d0d0d"/>
+              <circle cx="32" cy="22" r="4.5" fill="#C9A84C" opacity="0.95"/>
+              <path d="M28.5 25.5 L28.5 32 L35.5 32 L35.5 25.5 Z" fill="#C9A84C" opacity="0.95"/>
+              <path d="M30 29 L30 32 L34 32 L34 29 Z" fill="#0d0d0d"/>
+            </svg>
+            <div>
+              <div style="font-family:var(--font-display);font-size:0.95rem;font-weight:600;color:var(--gold);">Ask Jacey</div>
+              <div style="font-size:0.75rem;color:rgba(165,215,232,0.9);margin-top:2px;">askjaceynow@gmail.com</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="thankyou-right">
+      <div style="font-size:0.62rem;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:20px;">Questions &amp; Discussion</div>
+      <div style="font-family:var(--font-display);font-size:1.3rem;color:var(--white);margin-bottom:6px;font-weight:300;font-style:italic;">"No such thing as a<br/>question too basic."</div>
+      <div style="width:40px;height:1px;background:rgba(201,168,76,0.3);margin-bottom:24px;"></div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px;">
+        <div style="padding:10px 14px;background:rgba(255,255,255,0.04);border-radius:3px;border:1px solid rgba(201,168,76,0.12);font-size:0.75rem;color:rgba(255,255,255,0.75);">? SWIFT &amp; messaging standards</div>
+        <div style="padding:10px 14px;background:rgba(255,255,255,0.04);border-radius:3px;border:1px solid rgba(201,168,76,0.12);font-size:0.75rem;color:rgba(255,255,255,0.75);">? Payment rails and routing decisions</div>
+        <div style="padding:10px 14px;background:rgba(255,255,255,0.04);border-radius:3px;border:1px solid rgba(201,168,76,0.12);font-size:0.75rem;color:rgba(255,255,255,0.75);">? ISO 20022 readiness &amp; roadmap</div>
+        <div style="padding:10px 14px;background:rgba(255,255,255,0.04);border-radius:3px;border:1px solid rgba(201,168,76,0.12);font-size:0.75rem;color:rgba(255,255,255,0.75);">? Exception handling in your context</div>
+        <div style="padding:10px 14px;background:rgba(255,255,255,0.04);border-radius:3px;border:1px solid rgba(201,168,76,0.12);font-size:0.75rem;color:rgba(255,255,255,0.75);">? Technology vendor landscape</div>
+      </div>
+
+      <div style="padding:14px 16px;background:rgba(5,150,105,0.08);border:1px solid rgba(5,150,105,0.2);border-radius:3px;text-align:center;">
+        <div style="font-size:0.62rem;color:#6ee7b7;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Certificate of Completion</div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.7);">See your programme organiser for your completion certificate</div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <span class="footer-brand">Ask Jacey</span>
+      <span class="footer-email">askjaceynow@gmail.com</span>
+      <span class="slide-num">29 / 39</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 30 — USAGE & IP NOTICE
+══════════════════════════════════════════════════════════ -->
+<div class="slide" style="background:radial-gradient(ellipse at 50% 50%,#0d1f35 0%,#050e1c 70%);" data-section="Usage Notice">
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+    <div style="max-width:640px;padding:0 40px;text-align:center;">
+      <!-- Logo -->
+      <svg width="48" height="48" viewBox="0 0 64 64" fill="none" style="margin:0 auto 20px;display:block;">
+        <rect width="64" height="64" rx="12" fill="#0a0a0a"/>
+        <circle cx="32" cy="26" r="20" stroke="#C9A84C" stroke-width="2" fill="none"/>
+        <circle cx="32" cy="26" r="17.5" fill="#0d0d0d"/>
+        <circle cx="32" cy="22" r="5.5" fill="#C9A84C" opacity="0.95"/>
+        <path d="M28.5 26 L28.5 33 L35.5 33 L35.5 26 Z" fill="#C9A84C" opacity="0.95"/>
+        <path d="M30 29 L30 33 L34 33 L34 29 Z" fill="#0d0d0d"/>
+        <circle cx="32" cy="52" r="5" stroke="#C9A84C" stroke-width="1.8" fill="none"/>
+        <rect x="30.5" y="56.5" width="3" height="5" rx="0.8" fill="#C9A84C"/>
+        <rect x="33.5" y="58" width="3" height="1.8" rx="0.4" fill="#C9A84C"/>
+      </svg>
+
+      <div style="font-family:var(--font-mono);font-size:0.58rem;color:var(--gold);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px;">Programme Usage Notice</div>
+      <div style="font-family:var(--font-display);font-size:1.4rem;font-weight:400;color:var(--white);margin-bottom:24px;line-height:1.3;">Intellectual Property &amp; Usage Terms</div>
+
+      <div style="padding:28px 32px;background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.15);border-radius:4px;text-align:left;">
+        <div style="font-size:0.75rem;color:rgba(255,255,255,0.8);line-height:1.85;">
+          Training materials included in this programme were <strong style="color:var(--gold);">created by Ask Jacey</strong> for this engagement.<br/><br/>
+          These materials may be used by the <strong style="color:var(--white);">client organisation internally</strong> for participant learning and reference purposes only.<br/><br/>
+          <strong style="color:var(--gold);">Ownership</strong> of original content, structure, and presentation design remains with Ask Jacey.<br/><br/>
+          <strong style="color:rgba(252,165,165,0.9);">External redistribution, resale, rebranding, or reuse for independent commercial training delivery</strong> is not permitted without prior written permission from Ask Jacey.
+        </div>
+      </div>
+
+      <div style="margin-top:24px;display:flex;align-items:center;justify-content:center;gap:10px;">
+        <div style="width:1px;height:14px;background:rgba(201,168,76,0.2);"></div>
+        <div style="font-size:0.65rem;color:rgba(100,116,139,0.7);">askjaceynow@gmail.com · Ask Jacey · Payments Domain Training</div>
+        <div style="width:1px;height:14px;background:rgba(201,168,76,0.2);"></div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-brand">Ask Jacey</span>
+    <span class="footer-email">askjaceynow@gmail.com</span>
+    <span class="slide-num">30 / 39</span>
+  </div>
+</div>
+
+</div><!-- /slide-container -->
+</div><!-- /deck -->
+
+<!-- Navigation -->
+<div class="nav-controls">
+  <button class="nav-btn" id="prev-btn" onclick="prevSlide()" title="Previous (←)">&#8592;</button>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:3px;">
+    <div class="nav-progress" id="nav-progress">1 / 30</div>
+    <div class="nav-section" id="nav-section">Introduction</div>
+  </div>
+  <button class="nav-btn" id="next-btn" onclick="nextSlide()" title="Next (→)">&#8594;</button>
+</div>
+
+</div><!-- /presentation -->
+
+<script>
+// ── LOGIN ─────────────────────────────────────────────────
+function doLogin() {
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value.trim();
+  const err = document.getElementById('login-err');
+  if ((u.toLowerCase()==='guest' || u.toLowerCase()==='askjacey') && p==='training123') {
+    document.getElementById('login-screen').style.opacity='0';
+    document.getElementById('login-screen').style.transition='opacity 0.8s ease';
+    setTimeout(()=>{
+      document.getElementById('login-screen').style.display='none';
+      document.getElementById('presentation').classList.add('active');
+    },800);
+    err.classList.remove('show');
+  } else {
+    err.classList.add('show');
+    document.getElementById('login-pass').value='';
+    document.getElementById('login-pass').focus();
+  }
+}
+
+// Enter key on password field
+document.getElementById('login-pass').addEventListener('keydown',e=>{
+  if(e.key==='Enter') doLogin();
+});
+document.getElementById('login-user').addEventListener('keydown',e=>{
+  if(e.key==='Enter') document.getElementById('login-pass').focus();
+});
+
+// ── SLIDE NAVIGATION ──────────────────────────────────────
+const slides = document.querySelectorAll('.slide');
+let current = 0;
+const total = slides.length;
+
+function goTo(n, direction='forward') {
+  const prev = slides[current];
+  prev.classList.remove('active');
+  prev.classList.add(direction==='forward' ? 'exit-left' : 'exit-right');
+  setTimeout(()=>prev.classList.remove('exit-left','exit-right'),600);
+
+  current = n;
+  const next = slides[current];
+  next.style.transform = direction==='forward' ? 'translateX(40px)' : 'translateX(-40px)';
+  requestAnimationFrame(()=>{
+    next.classList.add('active');
+    next.style.transform='';
+  });
+
+  document.getElementById('nav-progress').textContent = `${current+1} / ${total}`;
+  document.getElementById('nav-section').textContent = next.dataset.section || '';
+  document.getElementById('prev-btn').disabled = current===0;
+  document.getElementById('next-btn').disabled = current===total-1;
+}
+
+function nextSlide() { if(current<total-1) goTo(current+1,'forward'); }
+function prevSlide() { if(current>0) goTo(current-1,'backward'); }
+
+// Keyboard
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('presentation').classList.contains('active')) return;
+  if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ') { e.preventDefault(); nextSlide(); }
+  if(e.key==='ArrowLeft'||e.key==='PageUp') { e.preventDefault(); prevSlide(); }
+  if(e.key==='Home') goTo(0);
+  if(e.key==='End') goTo(total-1);
+});
+
+// Touch swipe
+let touchStartX=0;
+document.getElementById('slide-container').addEventListener('touchstart',e=>touchStartX=e.touches[0].clientX,{passive:true});
+document.getElementById('slide-container').addEventListener('touchend',e=>{
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if(Math.abs(dx)>50) { if(dx<0) nextSlide(); else prevSlide(); }
+},{passive:true});
+
+// Init
+document.getElementById('prev-btn').disabled=true;
+document.getElementById('nav-progress').textContent=`1 / ${total}`;
+document.getElementById('nav-section').textContent=slides[0].dataset.section||'';
+</script>
+</body>
+</html>
